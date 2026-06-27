@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz · Estadística II — HMV</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+  :root{
+    --bg:#0e0a18;
+    --panel:#171128;
+    --panel2:#1f1736;
+    --ink:#ece8f5;
+    --muted:#a89fc4;
+    --violet:#9d7bff;
+    --violet-deep:#6f4bd8;
+    --violet-soft:#2a2046;
+    --green:#3ddc84;
+    --green-deep:#1a7a4a;
+    --red:#ff6b81;
+    --red-deep:#8a2436;
+    --amber:#ffcf5c;
+    --line:#2e2547;
+    --shadow:0 20px 60px -20px rgba(0,0,0,.7);
+    --glow1:rgba(157,123,255,.12);
+    --glow1-pos:80% -10%;
+    --glow2:rgba(61,220,132,.06);
+    --glow2-pos:-10% 110%;
+    --opt-shadow:none;
+    color-scheme:dark;
+  }
+
+  /* ===== Amanecer (05–09) ===== */
+  html[data-theme="dawn"]{
+    --bg:#f6f1fb;
+    --panel:#ffffff;
+    --panel2:#fbf7ff;
+    --ink:#2a2342;
+    --muted:#7c7299;
+    --violet:#7c5bd8;
+    --violet-deep:#6442c4;
+    --violet-soft:#f1e9fb;
+    --green:#1faf63;
+    --green-deep:#0f7a44;
+    --red:#e0566f;
+    --amber:#d99800;
+    --line:#e8dff4;
+    --shadow:0 18px 50px -24px rgba(124,91,216,.35);
+    --glow1:rgba(255,190,140,.28);
+    --glow1-pos:78% -12%;
+    --glow2:rgba(157,123,255,.16);
+    --glow2-pos:-8% 108%;
+    --opt-shadow:0 1px 2px rgba(40,30,70,.04);
+    color-scheme:light;
+  }
+
+  /* ===== Día (09–18) ===== */
+  html[data-theme="day"]{
+    --bg:#eef1f7;
+    --panel:#ffffff;
+    --panel2:#f7f8fc;
+    --ink:#1b2233;
+    --muted:#69718a;
+    --violet:#6f4bd8;
+    --violet-deep:#5a36c4;
+    --violet-soft:#ece8fb;
+    --green:#1a9d5a;
+    --green-deep:#0d7a44;
+    --red:#dd4f68;
+    --amber:#c98a00;
+    --line:#e1e5ef;
+    --shadow:0 16px 44px -22px rgba(50,60,90,.30);
+    --glow1:rgba(111,75,216,.12);
+    --glow1-pos:82% -10%;
+    --glow2:rgba(60,160,210,.10);
+    --glow2-pos:-10% 110%;
+    --opt-shadow:0 1px 2px rgba(30,40,60,.04);
+    color-scheme:light;
+  }
+
+  /* ===== Atardecer (18–21) ===== */
+  html[data-theme="dusk"]{
+    --bg:#1a1220;
+    --panel:#251828;
+    --panel2:#301f33;
+    --ink:#f6e9ee;
+    --muted:#c8a9b8;
+    --violet:#c07bff;
+    --violet-deep:#8a52d8;
+    --violet-soft:#33222e;
+    --green:#46d68f;
+    --green-deep:#1a7a52;
+    --red:#ff7a82;
+    --amber:#ffb454;
+    --line:#3f2a3c;
+    --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+    --glow1:rgba(255,140,90,.18);
+    --glow1-pos:80% -8%;
+    --glow2:rgba(192,123,255,.14);
+    --glow2-pos:-10% 112%;
+    --opt-shadow:none;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at var(--glow1-pos), var(--glow1), transparent 60%),
+      radial-gradient(900px 500px at var(--glow2-pos), var(--glow2), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.5;
+    padding:clamp(12px,3vw,40px);
+    transition:background-color .5s ease, color .5s ease;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+
+  /* ---------- Header ---------- */
+  header.masthead{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+    padding-bottom:18px;margin-bottom:24px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--violet);margin-bottom:6px;
+  }
+  .brand h1{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(26px,5vw,40px);line-height:1.02;letter-spacing:-.01em;
+  }
+  .brand h1 em{font-style:italic;color:var(--violet)}
+  .brand .sub{color:var(--muted);font-size:13px;margin-top:6px}
+
+  .streakbox{
+    text-align:right;font-family:'JetBrains Mono',monospace;
+  }
+  .streakbox .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .streakbox .val{font-size:30px;color:var(--ink);line-height:1}
+
+  /* ---------- Cards ---------- */
+  .card{
+    background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:clamp(18px,4vw,32px);
+    box-shadow:var(--shadow);
+  }
+
+  .screen{display:none;animation:fade .35s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- Start screen ---------- */
+  .lead{color:var(--muted);font-size:15px;margin:10px 0 26px;max-width:62ch}
+  .part-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.part-grid{grid-template-columns:1fr}}
+  .part-btn{
+    text-align:left;cursor:pointer;
+    background:var(--violet-soft);
+    border:1px solid var(--line);
+    border-radius:14px;padding:20px;
+    color:var(--ink);transition:.18s;
+    position:relative;overflow:hidden;
+  }
+  .part-btn:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .part-btn .pnum{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+  .part-btn .ptitle{font-family:'Fraunces',serif;font-size:26px;font-weight:600;margin:6px 0 4px}
+  .part-btn .pmeta{font-size:13px;color:var(--muted)}
+  .part-btn .pbest{
+    margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--green);
+  }
+  .part-btn .pbest.none{color:var(--muted)}
+
+  .allbtn{
+    margin-top:16px;width:100%;cursor:pointer;
+    background:transparent;border:1px dashed var(--line);
+    color:var(--muted);border-radius:12px;padding:14px;font-size:13px;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.05em;transition:.18s;
+  }
+  .allbtn:hover{border-color:var(--violet);color:var(--ink)}
+
+  /* ---------- Review card ---------- */
+  .review-card{margin-top:18px}
+  .rev-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .rev-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber)}
+  .rev-title{font-family:'Fraunces',serif;font-size:clamp(20px,3.6vw,26px);font-weight:600;color:var(--ink);margin-top:3px}
+  .rev-go{font-size:14px;padding:11px 20px;white-space:nowrap}
+  .rev-note{color:var(--muted);font-size:13px;margin:10px 0 16px}
+  .rev-list{list-style:none;counter-reset:rev;margin:0;padding:0;max-height:340px;overflow-y:auto}
+  .rev-item{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:11px 4px;border-bottom:1px solid var(--violet-soft);
+  }
+  .rev-item:last-child{border-bottom:none}
+  .rev-rank{
+    flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+    min-width:22px;height:22px;border-radius:6px;display:grid;place-items:center;margin-top:2px;
+    background:var(--violet-soft);color:var(--violet);
+  }
+  .rev-item.top1 .rev-rank{background:rgba(255,107,129,.16);color:var(--red)}
+  .rev-item.top2 .rev-rank{background:rgba(255,160,90,.16);color:var(--amber)}
+  .rev-body{flex:1;min-width:0}
+  .rev-code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--violet);margin-right:6px}
+  .rev-q{font-size:14px;line-height:1.4;color:var(--ink)}
+  .rev-count{
+    flex:0 0 auto;font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--red);font-weight:600;margin-top:2px;text-align:right;white-space:nowrap;
+  }
+  .rev-count small{display:block;color:var(--muted);font-weight:400;font-size:10px}
+  .rev-clearbox{margin-top:14px;text-align:right}
+  .rev-clear{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit}
+
+  .footnote{margin-top:22px;font-size:12px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
+  .footnote button{background:none;border:none;color:var(--violet);cursor:pointer;font-size:12px;text-decoration:underline;font-family:inherit}
+
+  /* ---------- Quiz progress bar ---------- */
+  .qtop{display:flex;align-items:center;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+  .pill{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--line);
+    color:var(--muted);background:var(--panel);
+  }
+  .pill.round{color:var(--amber);border-color:rgba(255,207,92,.3)}
+  .pill.code{color:var(--violet)}
+  .pill.multi{color:var(--amber);border-color:var(--amber);background:rgba(255,207,92,.08)}
+  .pill.ppd{color:var(--violet);border-color:rgba(157,123,255,.4);background:rgba(157,123,255,.08)}
+  .qtop .spacer{flex:1}
+  .quitbtn{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit}
+
+  .bar{height:6px;background:var(--violet-soft);border-radius:999px;overflow:hidden;margin-bottom:26px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--violet-deep),var(--violet));width:0;transition:width .4s ease}
+
+  /* ---------- Question ---------- */
+  .qtext{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,3.4vw,25px);line-height:1.28;margin-bottom:8px}
+  .qhint{font-size:13px;color:var(--amber);margin-bottom:20px;display:none}
+  .qhint.show{display:block}
+
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{
+    display:flex;align-items:flex-start;gap:13px;
+    background:var(--panel);border:1.5px solid var(--line);
+    border-radius:13px;padding:15px 16px;cursor:pointer;
+    transition:.14s;text-align:left;color:var(--ink);font-size:15px;width:100%;
+    font-family:inherit;line-height:1.4;
+  }
+  .opt:hover:not(.locked){border-color:var(--violet);background:var(--violet-soft)}
+  .opt .mark{
+    flex:0 0 22px;height:22px;border-radius:6px;border:1.5px solid var(--muted);
+    display:grid;place-items:center;font-size:13px;margin-top:1px;transition:.14s;color:transparent;
+  }
+  .opt.radio .mark{border-radius:50%}
+  .opt.sel .mark{border-color:var(--violet);background:var(--violet);color:#fff}
+  .opt.locked{cursor:default}
+  .opt.correct{border-color:var(--green);background:rgba(61,220,132,.1)}
+  .opt.correct .mark{border-color:var(--green);background:var(--green);color:#06281a}
+  .opt.wrong{border-color:var(--red);background:rgba(255,107,129,.09)}
+  .opt.wrong .mark{border-color:var(--red);background:var(--red);color:#2a0810}
+  .opt.missed{border-color:var(--green);background:transparent}
+  .opt.missed .mark{border-color:var(--green);color:var(--green)}
+
+  /* ---------- Action row ---------- */
+  .actions{margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:inherit;font-weight:600;font-size:15px;cursor:pointer;
+    border:none;border-radius:12px;padding:13px 26px;transition:.16s;letter-spacing:.01em;
+  }
+  .btn-primary{background:linear-gradient(180deg,var(--violet),var(--violet-deep));color:#fff;box-shadow:0 8px 20px -8px rgba(157,123,255,.7)}
+  .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+  .btn-ghost{background:var(--violet-soft);color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--violet)}
+
+  .verdict{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500}
+  .verdict.ok{color:var(--green)}
+  .verdict.no{color:var(--red)}
+
+  /* ---------- Results ---------- */
+  .res-hero{text-align:center;padding:10px 0 26px}
+  .res-score{font-family:'Fraunces',serif;font-size:clamp(54px,12vw,84px);font-weight:700;line-height:1;letter-spacing:-.02em}
+  .res-score .of{color:var(--muted);font-size:.4em;font-weight:400}
+  .res-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--violet);margin-top:10px}
+  .res-msg{color:var(--muted);margin-top:14px;font-size:15px}
+  .res-sub{font-size:13px;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace}
+
+  .ring{display:block;margin:0 auto 8px;width:150px;height:150px}
+  .ring-bg{fill:none;stroke:var(--violet-soft);stroke-width:11}
+  .ring-fg{fill:none;stroke:url(#rg);stroke-width:11;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)}
+
+  /* ---------- Ranking ---------- */
+  .rank-h{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin:30px 0 4px;display:flex;align-items:center;gap:10px}
+  .rank-h .dot{width:8px;height:8px;border-radius:50%;background:var(--violet)}
+  .rank-sub{font-size:12px;color:var(--muted);margin-bottom:16px;font-family:'JetBrains Mono',monospace}
+
+  table.rank{width:100%;border-collapse:collapse;font-size:13px}
+  table.rank th{
+    text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    padding:8px 10px;border-bottom:1px solid var(--line);font-weight:500;
+  }
+  table.rank td{padding:11px 10px;border-bottom:1px solid var(--violet-soft)}
+  table.rank tr:last-child td{border-bottom:none}
+  table.rank tr.is-new td{background:rgba(157,123,255,.07)}
+  .rk-medal{font-size:15px}
+  .rk-pct{font-family:'JetBrains Mono',monospace;font-weight:500}
+  .rk-bar{height:5px;background:var(--violet-soft);border-radius:3px;overflow:hidden;margin-top:5px;width:120px;max-width:30vw}
+  .rk-bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--violet-deep),var(--green))}
+  .rk-delta{font-family:'JetBrains Mono',monospace;font-size:12px}
+  .rk-delta.up{color:var(--green)}
+  .rk-delta.down{color:var(--red)}
+  .rk-delta.flat{color:var(--muted)}
+
+  .trend{margin:8px 0 4px;width:100%;height:64px;overflow:visible}
+
+  .res-actions{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+  .empty-rank{color:var(--muted);font-size:13px;padding:18px;text-align:center;border:1px dashed var(--line);border-radius:12px}
+
+  .micro{font-size:11px;color:var(--muted);text-align:center;margin-top:18px;font-family:'JetBrains Mono',monospace}
+  kbd{font-family:'JetBrains Mono',monospace;background:var(--panel);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;font-size:11px;color:var(--ink)}
+
+  /* ---------- Justification ---------- */
+  .justif{
+    margin-top:20px;border-radius:13px;padding:15px 17px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(157,123,255,.08),rgba(157,123,255,.03));
+    border-left:3px solid var(--violet);
+    animation:slidein .3s ease;
+  }
+  .justif[hidden]{display:none}
+  .justif.ok{border-left-color:var(--green);background:linear-gradient(180deg,rgba(61,220,132,.08),rgba(61,220,132,.02))}
+  .justif.no{border-left-color:var(--amber);background:linear-gradient(180deg,rgba(255,207,92,.08),rgba(255,207,92,.02))}
+  @keyframes slidein{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .justif-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+  .justif-ico{
+    width:20px;height:20px;border-radius:50%;display:grid;place-items:center;
+    font-size:12px;font-weight:700;flex:0 0 20px;
+    background:var(--violet);color:#fff;
+  }
+  .justif.ok .justif-ico{background:var(--green);color:#06281a}
+  .justif.no .justif-ico{background:var(--amber);color:#3a2a00}
+  #justifTitle{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .justif-body{font-size:14.5px;line-height:1.55;color:var(--ink)}
+
+  .extra{
+    margin-top:11px;padding:10px 13px;border-radius:10px;
+    font-size:13.5px;line-height:1.5;
+    display:block;
+  }
+  .extra[hidden]{display:none}
+  .extra-tag{
+    display:inline-block;font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    margin-right:8px;padding:2px 7px;border-radius:5px;font-weight:500;
+    vertical-align:middle;
+  }
+  .extra-txt{color:var(--ink);opacity:.92}
+  .extra.ej{background:rgba(125,180,255,.08);border:1px solid rgba(125,180,255,.18)}
+  .extra.ej .extra-tag{background:rgba(125,180,255,.18);color:#9cc4ff}
+  .extra.tip{background:rgba(255,207,92,.08);border:1px solid rgba(255,207,92,.2)}
+  .extra.tip .extra-tag{background:rgba(255,207,92,.16);color:var(--amber)}
+
+  /* ---------- Theme control ---------- */
+  .head-right{display:flex;align-items:center;gap:16px}
+  .themebtn{
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    background:var(--panel);border:1px solid var(--line);
+    color:var(--ink);border-radius:999px;padding:7px 13px 7px 11px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;
+    transition:.18s;
+  }
+  .themebtn:hover{border-color:var(--violet);transform:translateY(-1px)}
+  .theme-ico{font-size:14px;line-height:1}
+  .theme-lbl{color:var(--muted)}
+  @media(max-width:520px){.theme-lbl{display:none}.themebtn{padding:8px 10px}}
+
+  .card,.opt,.themebtn,.part-btn,.pill{transition:background-color .4s ease,border-color .4s ease,color .4s ease,box-shadow .4s ease}
+  .opt{box-shadow:var(--opt-shadow)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">
+      <div class="eyebrow">Siglo 21 · 2° Parcial</div>
+      <h1>Estadística <em>II</em></h1>
+      <div class="sub">Chi cuadrado · ANOVA · Regresión y Correlación</div>
+    </div>
+    <div class="head-right">
+      <button class="themebtn" id="themeBtn" title="Cambiar tema">
+        <span class="theme-ico" id="themeIco">🌙</span>
+        <span class="theme-lbl" id="themeLbl">Noche</span>
+      </button>
+      <div class="streakbox" id="liveStat" style="visibility:hidden">
+        <div class="lbl">Aciertos 1er intento</div>
+        <div class="val"><span id="liveOk">0</span><span style="color:var(--muted);font-size:18px">/<span id="liveSeen">0</span></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- START -->
+  <section class="screen active" id="screenStart">
+    <div class="card">
+      <p class="lead">116 preguntas divididas en dos partes. Las preguntas y las opciones se mezclan en cada intento. Al confirmar ves si acertaste; las que falles vuelven en rondas de repesca hasta que las domines. El ranking registra tu evolución contando <strong style="color:var(--ink)">solo el primer intento</strong> de cada pregunta.</p>
+
+      <div class="part-grid">
+        <button class="part-btn" data-part="1">
+          <div class="pnum">Parte I</div>
+          <div class="ptitle">Primera mitad</div>
+          <div class="pmeta" id="meta1">58 preguntas</div>
+          <div class="pbest none" id="best1">Sin intentos aún</div>
+        </button>
+        <button class="part-btn" data-part="2">
+          <div class="pnum">Parte II</div>
+          <div class="ptitle">Segunda mitad</div>
+          <div class="pmeta" id="meta2">58 preguntas</div>
+          <div class="pbest none" id="best2">Sin intentos aún</div>
+        </button>
+      </div>
+
+      <button class="allbtn" data-part="0">▸ O hacer las 116 de una sola vez</button>
+
+      <div class="footnote">
+        <span>El progreso se guarda en este navegador.</span>
+        <button id="resetAll">Borrar historial</button>
+      </div>
+    </div>
+
+    <div class="card review-card" id="reviewCard" hidden>
+      <div class="rev-head">
+        <div>
+          <div class="rev-eyebrow">Para repasar</div>
+          <div class="rev-title">Tus preguntas más falladas</div>
+        </div>
+        <button class="btn btn-primary rev-go" id="reviewGo">Practicar estas →</button>
+      </div>
+      <p class="rev-note" id="revNote">Ordenadas por cantidad de veces que las erraste en el primer intento.</p>
+      <ol class="rev-list" id="reviewList"></ol>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="screenQuiz">
+    <div class="card">
+      <div class="qtop">
+        <span class="pill" id="pProg">1 / 58</span>
+        <span class="pill round" id="pRound" style="display:none">Repesca · ronda 2</span>
+        <span class="pill code" id="pCode">[4.1]</span>
+        <span class="pill multi" id="pMulti" style="display:none">Selección múltiple</span>
+        <span class="pill ppd" id="pPostponed" style="display:none">↪ Pospuesta</span>
+        <span class="spacer"></span>
+        <button class="quitbtn" id="quitQuiz">Salir</button>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+
+      <div class="qtext" id="qText"></div>
+      <div class="qhint" id="qHint">Seleccioná todas las correctas.</div>
+      <div class="opts" id="opts"></div>
+
+      <div class="justif" id="justif" hidden>
+        <div class="justif-head"><span class="justif-ico" id="justifIco">✓</span><span id="justifTitle">Por qué</span></div>
+        <div class="justif-body" id="justifBody"></div>
+        <div class="extra ej" id="exJustif" hidden>
+          <span class="extra-tag">Ejemplo</span>
+          <span class="extra-txt" id="exBody"></span>
+        </div>
+        <div class="extra tip" id="tipJustif" hidden>
+          <span class="extra-tag">💡 Para recordar</span>
+          <span class="extra-txt" id="tipBody"></span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="confirmBtn" disabled>Confirmar</button>
+        <button class="btn btn-ghost" id="postponeBtn">Posponer ↪</button>
+        <button class="btn btn-primary" id="nextBtn" style="display:none">Siguiente →</button>
+        <span class="verdict" id="verdict"></span>
+      </div>
+    </div>
+    <div class="micro">Atajos: <kbd>1</kbd>–<kbd>9</kbd> elegir · <kbd>Enter</kbd> confirmar / siguiente · <kbd>P</kbd> posponer</div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="screenRes">
+    <div class="card">
+      <div class="res-hero">
+        <svg class="ring" viewBox="0 0 120 120">
+          <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#9d7bff"/><stop offset="1" stop-color="#3ddc84"/>
+          </linearGradient></defs>
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        </svg>
+        <div class="res-score"><span id="resPct">0</span><span style="font-size:.5em">%</span></div>
+        <div class="res-label" id="resPart">Parte I · primer intento</div>
+        <div class="res-msg" id="resMsg"></div>
+        <div class="res-sub" id="resSub"></div>
+      </div>
+
+      <div id="rankWrap">
+        <div class="rank-h"><span class="dot"></span> Tu evolución</div>
+        <div class="rank-sub" id="rankSub">Precisión de primer intento · esta parte</div>
+        <svg class="trend" id="trend" preserveAspectRatio="none"></svg>
+        <table class="rank">
+          <thead><tr><th style="width:34px">#</th><th>Intento</th><th>Precisión</th><th style="width:64px">Δ</th></tr></thead>
+          <tbody id="rankBody"></tbody>
+        </table>
+      </div>
+
+      <div class="res-actions">
+        <button class="btn btn-primary" id="retryBtn">Reintentar esta parte</button>
+        <button class="btn btn-ghost" id="homeBtn">Volver al inicio</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const QUESTIONS = [{"c": "6.1.2", "m": 0, "q": "Nos indica el porcentaje del ajuste que se ha conseguido con el modelo lineal ¿A qué concepto corresponde esta definición?", "o": ["r (coeficiente de correlación)", "R2 (coeficiente de determinación)", "b1 (coeficiente de la pendiente)"], "a": [1], "j": "El R² (coeficiente de determinación) expresa qué proporción de la variabilidad de Y queda explicada por el modelo lineal. Por eso se interpreta como el porcentaje de ajuste logrado.", "ej": "Si R²=0,80, el modelo explica el 80% de la variación de Y; el 20% restante queda sin explicar.", "tip": "R² → la 'R' de Rendimiento del modelo: cuánto del total logra explicar."}, {"c": "4.2", "m": 0, "q": "El estadístico de prueba chi cuadrado para diferencia entre dos proporciones ¿qué tipo de solución tiene aproximadamente?", "o": ["Distribución chi cuadrado.", "Distribución normal estandarizada.", "Distribución t de Student."], "a": [0], "j": "El estadístico para la diferencia entre dos proporciones se distribuye aproximadamente como una chi cuadrado. 'Chi cubo' no existe como distribución.", "tip": "Proporciones categóricas → siempre chi cuadrado. 'Chi cubo' no existe."}, {"c": "5.1.4", "m": 0, "q": "En un experimento se compararon tres métodos para capacitar a empleados nuevos de una empresa de servicios; para evaluar los resultados de cada uno se administró una prueba de 50 ítems relacionados con la tarea a desarrollar, a cada uno de los 24 integrantes repartidos en grupos de 8 personas cada uno. ¿Qué hipótesis es relevante contrastar?", "o": ["Ho: al menos una de las medias de respuestas correctas es distinta a las demás.", "Ho: las medias de respuestas correctas para los tres métodos son iguales."], "a": [1], "j": "La hipótesis nula en ANOVA siempre plantea igualdad de medias. Que difieran (o que al menos una difiera) es la hipótesis alternativa, no la nula.", "ej": "Tres métodos de capacitación: H0 afirma que los tres dan el mismo promedio de aciertos.", "tip": "H0 es la hipótesis del '=': todo igual. Que difieran es la alternativa."}, {"c": "6.1.1", "m": 0, "q": "El método de mínimos cuadrados ¿qué valores determina para reducir al mínimo la suma de las diferencias al cuadrado alrededor de la línea de predicción?", "o": ["Los valores de b0 (intersección de la muestra con el eje Y) b1 (pendiente de la muestra).", "Los valores de b0 (pendiente de la muestra) b1 (intersección de la muestra con el eje Y).", "Los valores de b0 (intersección de la muestra con el eje X) b1 (pendiente de la muestra)."], "a": [0], "j": "Mínimos cuadrados estima b0 (la ordenada al origen, donde la recta corta el eje Y) y b1 (la pendiente). Así minimiza la suma de los residuos al cuadrado.", "ej": "En Ŷ = 3 + 2X: b0=3 (valor cuando X=0, corta el eje Y) y b1=2 (Y sube 2 por cada unidad de X).", "tip": "b0 → orden 0, punto de partida en el eje Y. b1 → la pendiente, va pegada a la X."}, {"c": "5.1.4", "m": 0, "q": "Si la hipótesis nula es verdadera y no hay diferencia entre las c medias grupales los tres cuadrados medios (o varianzas) CME (cuadrado medio entre), CMO (cuadrado medio dentro) y CMT (cuadrado medio total), proporcionan estimaciones de la varianza total en los datos.", "o": ["Falso", "Verdadero"], "a": [1], "j": "Bajo H0 verdadera, las tres estimaciones de varianza (CME, CMD y CMT) apuntan al mismo valor: la varianza común de los datos. Por eso resultan equivalentes.", "tip": "Si no hay diferencia entre grupos, las tres varianzas apuntan al mismo valor común."}, {"c": "4.1.1", "m": 0, "q": "¿Cuál es el estadístico que se utiliza para evitar “intuiciones” respecto de las frecuencias observadas y esperadas?", "o": ["Chi Cuadrado", "Coeficiente de contingencia", "Ji de Pearson simple"], "a": [0], "j": "El estadístico chi cuadrado compara objetivamente frecuencias observadas con esperadas, evitando depender de la intuición. 'Chi cubo' no es un estadístico real.", "tip": "El estadístico le pone número a la corazonada: decide con datos, no con intuición."}, {"c": "5.1.3", "m": 0, "q": "¿Cuántos grados libertad corresponde a cada varianza?", "o": ["Dentro: n - k", "Dentro: n - k - 1", "Dentro: k - 1"], "a": [0], "j": "La varianza dentro (intragrupo) tiene n − k grados de libertad: n observaciones menos k grupos (cada grupo 'consume' un grado por su media).", "ej": "30 datos repartidos en 3 grupos → gl dentro = 30 − 3 = 27.", "tip": "Dentro: restás un grado por cada grupo. n − k."}, {"c": "6.2", "m": 0, "q": "El R2 es:", "o": ["Una medida de variabilidad de la variable.", "Una medida de bondad de ajuste.", "Una medida de dispersión del ajuste."], "a": [1], "j": "El R² mide qué tan bien la recta se ajusta a los datos, es decir, la bondad del ajuste del modelo, no de una variable aislada.", "tip": "R² mide qué tan bien 'ajusta' la recta a los datos, no una variable suelta."}, {"c": "6.1", "m": 0, "q": "En el análisis de regresión ¿cómo debe ser la relación entre las variables?", "o": ["En el análisis de regresión debe existir una relación de causalidad entre las variables.", "En el análisis de regresión debe existir una relación de dependencia entre las variables."], "a": [0], "j": "El análisis de regresión presupone una relación de causalidad o dependencia de Y respecto de X: se usa X para explicar o predecir Y.", "tip": "Regresión presume dirección: X explica/causa a Y."}, {"c": "6.2", "m": 0, "q": "¿Cómo se puede cuantificar el grado de asociación entre dos variables?", "o": ["Calculando el coeficiente de determinación.", "Calculando el coeficiente de correlación.", "Calculando el coeficiente de variación."], "a": [1], "j": "El grado de asociación lineal entre dos variables se cuantifica con el coeficiente de correlación (r), que va de −1 a 1.", "tip": "Asociación lineal = correlación (r)."}, {"c": "4.1", "m": 0, "q": "¿Qué pruebas se puede utilizar para probar si la proporción poblacional π1 es igual a la población poblacional π2?", "o": ["La prueba de chi cuadrado para la diferencia entre dos proporciones.", "La prueba de chi cuadrado para la independencia entre dos proporciones.", "La prueba de chi cuadrado para la bondad de ajuste de dos proporciones."], "a": [0], "j": "Para contrastar si π1 = π2 se usa la prueba chi cuadrado para la diferencia entre dos proporciones, que compara los conteos de ambos grupos.", "tip": "π1 vs π2 → chi cuadrado para la diferencia entre dos proporciones."}, {"c": "6.2", "m": 0, "q": "¿Qué mide el coeficiente de correlación?", "o": ["La fuerza relativa de una relación lineal entre dos variables numéricas.", "La dirección de una relación lineal entre dos variables numéricas.", "La fuerza absoluta de una relación lineal entre dos variables numéricas."], "a": [0], "j": "El coeficiente de correlación mide la fuerza relativa de la relación lineal entre dos variables numéricas. No mide relaciones no lineales ni 'separaciones'.", "ej": "r = 0,9 → relación lineal fuerte y positiva; r = −0,9 → fuerte y negativa.", "tip": "r mide la FUERZA y el signo de lo LINEAL. No capta lo no lineal."}, {"c": "6.2", "m": 0, "q": "¿Cuál es el concepto de covarianza?", "o": ["Cantidad que mide el grado de variación independiente de dos variables.", "Cantidad que mide el grado de variación conjunta de dos variables."], "a": [1], "j": "La covarianza mide cómo varían conjuntamente dos variables: si tienden a moverse en el mismo sentido (positiva) o en sentidos opuestos (negativa).", "ej": "Si al subir las horas de estudio sube la nota, la covarianza es positiva.", "tip": "Co-varianza → cómo varían CO-njuntamente DOS variables."}, {"c": "5.1", "m": 0, "q": "¿Por qué se opta por aplicar la prueba anova y no comparaciones de dos en dos de las respectivas medias poblacionales?", "o": ["Para evitar el mayor esfuerzo computacional y realizar un único conjunto de cálculos.", "Para reducir el esfuerzo computacional y controlar un único conjunto de errores.", "Para evitar el mayor esfuerzo computacional y realizar múltiples conjuntos de cálculos."], "a": [0], "j": "Se prefiere ANOVA porque, con un único conjunto de cálculos, evita el mayor esfuerzo de hacer muchas comparaciones de a pares y controla el error de tipo I.", "tip": "Una sola prueba (ANOVA) en lugar de muchas comparaciones de a pares."}, {"c": "4.2", "m": 0, "q": "¿Cómo son los grados de libertad en la tabla de contingencia?", "o": ["Son iguales a (número de reglones - 1) multiplicado por (número de columnas - 1)", "Son iguales a (número de reglones - 1) sumado a (número de columnas - 1)", "Son iguales a (número de reglones - 1) multiplicado por (número de columnas + 1)"], "a": [0], "j": "En una tabla de contingencia los grados de libertad son (filas − 1) × (columnas − 1). Es un producto, no una suma ni una división.", "ej": "Tabla 3×4 → (3−1)(4−1) = 2×3 = 6 grados de libertad.", "tip": "(Filas−1) × (Columnas−1). Siempre PRODUCTO, nunca suma."}, {"c": "4.2.1", "m": 0, "q": "¿Cuál es la fórmula para calcular la frecuencia esperada?", "o": ["La frecuencia esperada de una celda es el producto de su total de reglón por el total de columna dividido entre el tamaño total de la muestra", "La frecuencia esperada de una celda es la suma de su total de reglón más el total de columna dividido entre el tamaño total de la muestra", "La frecuencia esperada de una celda es el producto de su total de reglón por el total de columna dividido entre los grados de libertad"], "a": [0], "j": "La frecuencia esperada de cada celda = (total de su fila × total de su columna) / tamaño total de la muestra. Es lo esperado bajo independencia.", "ej": "Fila=67, Columna=88, n=187 → fe = 67×88/187 ≈ 31,5.", "tip": "Esperada = (total fila × total columna) / total. 'La cruz sobre el total'."}, {"c": "4.1", "m": 0, "q": "¿Qué test estadístico persigue el siguiente propósito “determinar si los datos disponibles de una muestra aleatoria de tamaño n corresponden a cierta distribución teórica”?", "o": ["Test de bondad de ajuste", "Test de independencia", "Test de homogeneidad"], "a": [0], "j": "El test de bondad de ajuste evalúa precisamente si una muestra proviene de una distribución teórica supuesta.", "tip": "¿Los datos 'ajustan' a una distribución teórica? → bondad de ajuste."}, {"c": "4.1", "m": 0, "q": "¿Cuál es el concepto de prueba de bondad de ajuste?", "o": ["Prueba estadística que determina si existe una diferencia significativa entre la distribución de frecuencias observadas y una distribución teórica de probabilidad que supuestamente describiría la distribución observada.", "Prueba estadística que determina si existe una diferencia significativa entre la distribución de frecuencias esperadas y una distribución teórica de probabilidad que supuestamente describiría la distribución observada.", "Prueba estadística que determina si existe una diferencia significativa entre la distribución de frecuencias observadas y una distribución empírica de probabilidad que supuestamente describiría la distribución teórica."], "a": [0], "j": "La bondad de ajuste contrasta si la diferencia entre la distribución observada y la teórica supuesta es significativa o atribuible al azar.", "tip": "Compara lo OBSERVADO contra lo que predice la teoría."}, {"c": "4.1", "m": 0, "q": "En una prueba de bondad de ajuste En qué valores de la distribución del estadístico de prueba se ubica la zona de rechazo de Ho?", "o": ["En los valores más altos.", "En los valores más extremos.", "En los valores más bajos."], "a": [0], "j": "La zona de rechazo está en los valores altos del estadístico: cuanto mayor la discrepancia entre observado y esperado, mayor el chi cuadrado, y más se rechaza H0.", "tip": "Chi grande = mucha discrepancia = rechazo. La zona está en la cola alta."}, {"c": "4.1", "m": 0, "q": "Qué valores puedo asumir el estadístico de prueba de un test de bondad de ajuste?", "o": ["Valores no negativos.", "Valores no nulos.", "Valores no positivos."], "a": [0], "j": "El estadístico chi cuadrado es una suma de cuadrados divididos por valores positivos, por lo que solo puede tomar valores no negativos (≥ 0).", "tip": "Es suma de cuadrados sobre valores positivos → nunca da negativo (≥ 0)."}, {"c": "4.1", "m": 0, "q": "El test de bondad de ajuste se diferencia de acuerdo a la distribución que se supone que tiene la variable analizada.", "o": ["Falso", "Verdadero"], "a": [0], "j": "Es verdadero que el test se ajusta según la distribución supuesta, por lo tanto afirmar que NO se diferencia es falso. Cambia la forma de calcular las frecuencias esperadas."}, {"c": "4.1", "m": 0, "q": "¿Cuál de las siguientes es una de las condiciones que debe verificarse para aplicar un test de bondad de ajuste?", "o": ["Todas las casillas observadas tienen que tener al menos 5 observaciones. Por hipótesis del test respectivo.", "Todas las casillas esperadas tienen que tener al menos 5 observaciones. Por hipótesis del test respectivo.", "Todas las casillas observadas tienen que tener al menos 6 observaciones. Por hipótesis del test respectivo."], "a": [0], "j": "Una condición clave es que cada casilla esperada tenga al menos 5 observaciones; de lo contrario la aproximación chi cuadrado pierde validez.", "tip": "Regla del 5: cada celda esperada necesita al menos 5 observaciones."}, {"c": "4.1.1", "m": 0, "q": "El método de mínimos cuadrados a ¿Qué valores determina para reducir al mínimo la suma de las diferencias al cuadrado de la línea de predicción?", "o": ["Los valores b0 (intersección de la muestra con el eje y); b1 (producto de la muestra).", "Los valores b0 (intersección de la muestra con el eje x); b1 (producto de la muestra).", "Los valores b0 (intersección de la muestra con el eje y); b1 (pendiente de la muestra)."], "a": [0], "j": "Mínimos cuadrados determina b0 (intersección con el eje Y) y b1 (pendiente), minimizando la suma de las diferencias al cuadrado respecto de la recta.", "tip": "b0 corta el eje Y; b1 es la pendiente."}, {"c": "4.1.1", "m": 0, "q": "Si los conjuntos de frecuencias observadas y esperadas son casi iguales. Qué podemos incluir? H0: pN = ps = pc = pw (hipótesis nula) H1: pN, ps, pc y pw no son iguales (hipótesis alternativa)", "o": ["Podemos razonar y concluir que aceptamos la hipótesis nula.", "Podemos razonar y concluir que rechazamos la hipótesis nula.", "Podemos razonar y concluir que aceptamos la hipótesis alternativa."], "a": [0], "j": "Si las frecuencias observadas y esperadas son casi iguales, no hay evidencia para rechazar H0, así que se acepta (no se rechaza) la hipótesis nula.", "tip": "Si observado y esperado coinciden, no hay motivo para rechazar H0."}, {"c": "4.1.1", "m": 0, "q": "¿Cuál es la definición de frecuencias esperadas?", "o": ["Las que esperamos ver en una tabla de contingencia o de distribución de frecuencia, si la hipótesis nula es verdadera", "Las que esperamos ver en una tabla de contingencia o de distribución de frecuencia, si la hipótesis nula es falsa", "Las que esperamos ver en una tabla de contingencia o de distribución de frecuencia, si la hipótesis alternativa es verdadera"], "a": [0], "j": "Las frecuencias esperadas son las que se darían en la tabla si la hipótesis nula (independencia o distribución teórica) fuera verdadera.", "tip": "Esperadas = las frecuencias que habría SI H0 fuera verdadera."}, {"c": "4.1.2", "m": 0, "q": "Qué sucede cuando crece el número de grados de libertad?", "o": ["La curva rápidamente se torna más simétrica hasta que el número alcanza valores altos.", "La curva rápidamente se torna más asimétrica hasta que el número alcanza valores altos.", "La curva rápidamente se torna más simétrica hasta que el número alcanza valores bajos."], "a": [0], "j": "Al aumentar los grados de libertad, la distribución chi cuadrado pierde su sesgo a la derecha y se va aproximando a una forma simétrica (similar a la normal).", "tip": "Más grados de libertad → la chi se vuelve más simétrica (se parece a la normal)."}, {"c": "4.1.2", "m": 0, "q": "¿Cuántos grados de libertad tiene el estadístico del test de bondad de ajuste? (donde n = cantidad de casos de muestra; k = cantidad de valores de la variable considerados; r = cantidad de filas; c = cantidad de columnas)", "o": ["k - 1.", "n - 1.", "k - 2."], "a": [0], "j": "En el test de bondad de ajuste los grados de libertad son k − 1, donde k es la cantidad de categorías o valores considerados de la variable.", "ej": "Un dado de 6 caras → gl = 6 − 1 = 5.", "tip": "Bondad de ajuste: k categorías menos 1. k − 1."}, {"c": "4.1", "m": 0, "q": "Qué sucede cuando los números de los grados libertad son muy pequeños?", "o": ["Cuando los números de los grados de libertad son muy pequeños, la distribución Chi cuadrado muestra un fuerte sesgo hacia la derecha.", "Cuando los números de los grados de libertad son muy pequeños, la distribución Chi cuadrado muestra un leve sesgo hacia la derecha.", "Cuando los números de los grados de libertad son muy pequeños, la distribución Chi cuadrado muestra un fuerte sesgo hacia la izquierda."], "a": [0], "j": "Con pocos grados de libertad la distribución chi cuadrado presenta un marcado sesgo hacia la derecha (asimetría positiva).", "tip": "Pocos grados de libertad → chi muy sesgada hacia la derecha."}, {"c": "4.2", "m": 0, "q": "¿A que igual estadístico de prueba de chi cuadrado?", "o": ["Es igual a la diferencia al cuadrado entre las frecuencias observadas y esperadas, divididas entre frecuencia esperada en cada celda de la tabla, sumada en todas las celdas de la tabla.", "Es igual a la diferencia al cuadrado entre las frecuencias observadas y esperadas, divididas entre frecuencia observada en cada celda de la tabla, sumada en todas las celdas de la tabla.", "Es igual a la diferencia al cuadrado entre las frecuencias observadas y esperadas, multiplicadas por la frecuencia esperada en cada celda de la tabla, sumada en todas las celdas de la tabla."], "a": [0], "j": "El estadístico es Σ (fo − fe)² / fe: suma, sobre todas las celdas, del cuadrado de la diferencia entre observado y esperado dividido por el esperado.", "tip": "(Observado − esperado)², dividido por el esperado, sumado en todas las celdas."}, {"c": "4.2", "m": 0, "q": "Consiste en comprobar si dos características cualitativas están relacionadas entre sí ¿A qué tipo de pruebas se refiere?", "o": ["Test de independencia.", "Test de dependencia.", "Test de asociación."], "a": [0], "j": "Comprobar si dos características cualitativas están relacionadas es el objetivo del test de independencia (chi cuadrado de independencia).", "tip": "¿Dos variables cualitativas están relacionadas? → test de INDEPENDENCIA."}, {"c": "4.2", "m": 1, "q": "La tabla de contingencia de dos factores presenta la frecuencia con la que ocurren .Qué tipo de elementos? seleccione 2 respuestas correctas:", "o": ["Elementos contingentes", "Elementos de interés", "Elementos que no son de interés."], "a": [1, 2], "j": "La tabla de doble entrada registra tanto los elementos de interés como los que no son de interés en cada grupo; ambos conteos se necesitan para el análisis.", "tip": "En la tabla cuentan los que SON de interés y los que NO lo son."}, {"c": "4.2", "m": 0, "q": "En una prueba de Independencia. Qué valores de la distribución del estadístico de prueba indican que la evidencia muestral da cuenta de cierta asociación de las variables?", "o": ["En los valores más altos.", "En los valores más extremos.", "En los valores más bajos."], "a": [0], "j": "Valores altos del estadístico indican que las frecuencias observadas se alejan de las esperadas bajo independencia, evidenciando asociación entre las variables.", "tip": "Chi grande → las variables están asociadas."}, {"c": "4.2", "m": 1, "q": "Un fondo de contingencia de dos factores presenta la frecuencia con la que ocurren elemento de interés para cada grupo. La frecuencia para cada combinación de reglón está dada por x1= número de elementos del grupo 1 y x2= número de elementos de interés en el grupo 2, y la columna está dada por n1 - x1 = número de elementos que no son de interés de grupo 1 y n 2 - x2 = número de elementos que no son de interés en el grupo 2. Cuáles son los totales de los renglones y columnas? seleccione 4 correctas.", "o": ["x = x1 - x2, número total de elementos de interés.", "n1 = tamaño de muestra total en el grupo 1", "n2 = tamaño de muestra total en el grupo 2", "x = x1 + x2, número total de elementos de interés.", "n - x = (n1 - x1 ) + (n2 - x2), número total de elementos que no son de interés."], "a": [1, 2, 3, 4], "j": "Los marginales son: n1 y n2 (tamaños de cada grupo), x = x1 + x2 (total de elementos de interés) y n − x (total de los que no son de interés).", "tip": "Totales: tamaño de cada grupo (n1, n2), interés total (x) y no-interés total (n−x)."}, {"c": "4.2", "m": 0, "q": "el test de Independencia considera si dos variables categóricas están relacionadas o no", "o": ["Verdadero", "Falso"], "a": [0], "j": "Verdadero: el test de independencia evalúa justamente si dos variables categóricas están relacionadas o son independientes entre sí.", "tip": "Independencia = ¿hay relación entre categóricas? Sí: verdadero."}, {"c": "4.2", "m": 0, "q": "La tabla de contingencia constituida por dos renglones y dos columnas como se denomina?", "o": ["Tabla de contingencia de 2 x 2", "Tabla de contingencia de 2 x 3", "Tabla de contingencia de 1 x 2"], "a": [0], "j": "Una tabla con dos filas y dos columnas se denomina tabla de contingencia 2 × 2, el caso más simple de tabla de doble entrada.", "tip": "2 filas × 2 columnas = tabla 2×2."}, {"c": "4.2", "m": 0, "q": "Cómo está constituido una tabla de contingencia?", "o": ["Una tabla de contingencia está constituida por reglones y columnas.", "Una tabla de contingencia está constituida por reglones y filas.", "Una tabla de contingencia está constituida por columnas y celdas."], "a": [0], "j": "Toda tabla de contingencia se organiza en filas (renglones) y columnas, cruzando las categorías de dos variables cualitativas.", "tip": "Contingencia = filas × columnas (doble entrada)."}, {"c": "4.2", "m": 1, "q": "Cuando se busca comparar los conteos de respuestas categóricas entre dos grupos independientes, ¿que se puede construir? seleccione las tres respuestas correctas:", "o": ["De contingencia.", "Una tabla.", "De frecuencias.", "De dos factores."], "a": [0, 1, 3], "j": "Para comparar conteos categóricos entre grupos se construye una tabla de contingencia (de dos factores / doble entrada).", "tip": "Comparar conteos entre grupos → tabla de contingencia (de dos factores)."}, {"c": "4.2", "m": 1, "q": "La tabla de contingencia para un estudio de satisfacción de una empresa obtiene los siguientes resultados: la frecuencia para cada combinación de renglón está dado por x1= número de elementos de interés en el grupo 1 = 163 y x2 = número de elementos de interés en el grupo 2 = 154, y la columna está dada por n1 – x1 = número de elementos que no son de interés en el grupo 1 = 64 y n2 – x2 = número de elementos que no son de interés en el grupo 2. ¿Cuáles son los totales por cada renglón y por cada columna? Seleccione 4 respuestas correctas.", "o": ["n2 = tamaño de muestra total en el grupo 2 = 262", "Fo - Fe = frecuencia observada menos frecuencia esperada = 241", "n - x = (n1 – x1) + (n2 – x2), número total de elementos que no son de interés = 172", "n1 = tamaño de muestra total en el grupo 1 = 227", "x = x1 + x2, número total de elementos de interés = 317"], "a": [0, 2, 3, 4], "j": "Calculando: n1 = 163 + 64 = 227; x = 163 + 154 = 317; el grupo 2 y el total de 'no interés' se obtienen sumando del mismo modo las celdas correspondientes."}, {"c": "4.2", "m": 1, "q": "Una tabla de contingencia. Seleccione las cuatro respuestas correctas:", "o": ["Es una organización de datos de doble entrada.", "Permite analizar la relación lineal entre 3 o más variables cuantitativas.", "Entre variables categóricas se asocia a un estadístico chi cuadrado.", "Permite analizar la asociación entre 2 variables cualitativas", "En sus bordes contienen las frecuencias marginales."], "a": [0, 2, 3, 4], "j": "La tabla de contingencia es una organización de datos de doble entrada que vincula dos variables cualitativas, con frecuencias marginales en sus bordes y asociada al estadístico chi cuadrado.", "tip": "Doble entrada + variables cualitativas + chi cuadrado + marginales en los bordes."}, {"c": "4.2", "m": 0, "q": "La tabla de contingencia para un estudio de satisfacción de una empresa obtiene los siguientes resultados... ¿Cuáles son los totales de los renglones y columnas?", "o": ["489", "487", "491"], "a": [0], "j": "El total general (489) surge de sumar todas las celdas de la tabla: equivale a la suma de los totales de fila o, equivalentemente, de columna.", "tip": "El gran total = suma de todas las celdas de la tabla."}, {"c": "4.2", "m": 0, "q": "Utilizando la fórmula de la proporción general estimada para los grupos y teniendo los siguientes datos x1 = 163; x2 =154; n1= 227; n2 = 262 Cuál es el valor?", "o": ["0,6483", "0,6438", "0,6843"], "a": [0], "j": "La proporción general estimada combina ambos grupos: p = (x1 + x2)/(n1 + n2) = 317/489 ≈ 0,6483.", "ej": "x1=163, x2=154, n1=227, n2=262 → p̄ = (163+154)/(227+262) = 317/489 ≈ 0,6483.", "tip": "p̄ = (x1+x2)/(n1+n2): junta los dos grupos."}, {"c": "4.2", "m": 0, "q": "Para probar la hipótesis nula de que no existe diferencia entre las dos proporciones poblacionales contra la hipótesis alternativa de que las dos proporciones poblacionales son diferentes. Qué ecuación usted debe utilizar?", "o": ["x² ESTAD = Σ (fo - fe)²/fe", "x² ESTAD = Σ (fo - fe)²/fo", "x² ESTAD = Σ (fo - fe)/fe"], "a": [0], "j": "Para contrastar la igualdad de dos proporciones se usa el estadístico chi cuadrado: x² = Σ (fo − fe)²/fe.", "tip": "Σ(fo−fe)²/fe. El denominador siempre es la esperada (fe)."}, {"c": "4.2", "m": 0, "q": "En la prueba de chi cuadrada para la diferencia entre dos proporciones, es el procedimiento de prueba de hipótesis utiliza un estadístico de prueba que se aproxima por medio de que distribución?", "o": ["Chi cuadrado", "Chi cuadrática", "Chi cubo"], "a": [0], "j": "El procedimiento se apoya en la distribución chi cuadrado, a la que el estadístico se aproxima cuando las frecuencias esperadas son suficientes.", "tip": "La diferencia de proporciones se aproxima a una chi cuadrado."}, {"c": "4.2", "m": 0, "q": "Para probar la hipótesis nula de que no existe diferencia entre las dos proporciones poblacionales contra la hipótesis alternativa de que las dos proporciones poblacionales son diferentes, que estadístico de prueba usted debe utilizar?", "o": ["Chi cuadrado", "Chi cuadrática", "Chi cubo"], "a": [0], "j": "El estadístico de prueba apropiado es el chi cuadrado, que compara las frecuencias observadas con las esperadas bajo H0.", "tip": "Proporciones → estadístico chi cuadrado."}, {"c": "4.2", "m": 0, "q": "En el caso de calcular la frecuencia esperada en cualquier celda, si la hipótesis nula es verdadera Cómo será la proporción de elementos de interés en las dos poblaciones?", "o": ["Los elementos de interés en las dos poblaciones será la misma.", "Los elementos de interés en las dos poblaciones será distinta.", "Los elementos de interés en las dos muestras será la misma."], "a": [0], "j": "Si H0 es verdadera, la proporción de elementos de interés es la misma en ambas poblaciones; eso permite calcular las frecuencias esperadas.", "tip": "Bajo H0, la proporción de interés es la MISMA en las dos poblaciones."}, {"c": "4.2", "m": 0, "q": "En una prueba de independencia cuántos factores de interés existen?", "o": ["En una prueba de independencia existen dos factores de interés.", "En una prueba de independencia existen tres factores de interés.", "En una prueba de independencia existe un factor de interés."], "a": [0], "j": "Una prueba de independencia analiza la relación entre dos factores (dos variables categóricas) de interés.", "tip": "Independencia = DOS factores de interés."}, {"c": "4.2", "m": 0, "q": "Cuál es el estadístico que representa la proporción general estimada de los elementos de interés para los dos grupos combinados? (cálculo de la proporción general estimada para dos grupos combinados)", "o": ["P", "p̂", "Pe"], "a": [0], "j": "La proporción general estimada de los dos grupos combinados se simboliza con p (p barra): agrupa los elementos de interés de ambos grupos.", "tip": "p̄ (p barra) combina ambos grupos en una sola proporción."}, {"c": "4.2", "m": 1, "q": "una tabla de contingencia de dos factores presenta la frecuencia con la que ocurren elementos de interés y algunos que no son de interés para cada grupo ¿Cuáles son dichos elementos? Seleccione las 4 respuestas correctas:", "o": ["N1 - X1 = número de elementos que no son de interés en el grupo 1", "X1 = número de elementos de interés en el grupo 1", "N2 - X2 = número de elementos que no son de interés en el grupo 2", "X2 = número de elementos de interés en el grupo 2", "N2 + X2 = número de elementos que no son de interés en el grupo 2"], "a": [0, 1, 2, 3], "j": "Los cuatro elementos son: x1 y x2 (interés en grupos 1 y 2) y n1 − x1 y n2 − x2 (no interés en grupos 1 y 2).", "tip": "Interés en cada grupo (x1, x2) y no-interés en cada grupo (n1−x1, n2−x2)."}, {"c": "4.1.2", "m": 0, "q": "Cuál es la ecuación para calcular los grados de libertad tabla de contingencia?", "o": ["Número de grados de libertad = (número de renglones - 1) (número de columna - 1)", "Número de grados de libertad = (número de renglones - 1) (número de columna + 1)", "Número de grados de libertad = (número de renglones - 1) + (número de columna - 1)"], "a": [0], "j": "Los grados de libertad de una tabla de contingencia son (n.º de filas − 1) × (n.º de columnas − 1).", "ej": "Tabla 4×3 → (4−1)(3−1) = 3×2 = 6.", "tip": "(Filas−1)(Columnas−1)."}, {"c": "4.2.1", "m": 0, "q": "¿Las pruebas de chi-cuadrado. Qué nos permiten verificar?", "o": ["Si más de dos porciones de poblaciones pueden considerarse iguales", "Si más de dos porciones de poblaciones pueden considerarse distintas", "Si más de dos proporciones de muestras pueden considerarse iguales"], "a": [0], "j": "Las pruebas chi cuadrado permiten verificar si más de dos proporciones poblacionales pueden considerarse iguales.", "tip": "Chi sirve para comparar MÁS de dos proporciones a la vez."}, {"c": "4.2.1", "m": 0, "q": "Calcule la frecuencia esperada, teniendo en cuenta los siguientes datos: total renglón = 67; total columna = 88; tamaño total de muestra = 187", "o": ["31,53", "31,35", "35,13"], "a": [0], "j": "Frecuencia esperada = (total fila × total columna)/total muestra = (67 × 88)/187 ≈ 31,53."}, {"c": "4.2.1", "m": 0, "q": "El estadístico de prueba chi cuadrado tiene aproximadamente una distribución chi cuadrado calcule los grados de libertad teniendo en cuenta los siguientes datos: número de renglones = 4 número de columna = 3.", "o": ["6", "7", "12 Módulo 5 — Análisis de la varianza (ANOVA)"], "a": [0], "j": "Grados de libertad = (filas − 1)(columnas − 1) = (4 − 1)(3 − 1) = 3 × 2 = 6."}, {"c": "5.1", "m": 1, "q": "Indicar Cuáles las siguientes afirmaciones son correctas en el caso de una anova seleccione las cuatro respuestas correctas.", "o": ["Lo que significa que las medias de la variable dependiente difieren o varían mucho entre los grupos de la variable independiente.", "Cuanto más alto sea F, mayor la evidencia de que difieren entre sí las medidas de las poblaciones.", "Un valor de F suficientemente elevado indica que la variabilidad se debe principalmente al grupo al que fueron asignadas las observaciones.", "Se acepta la Ho si el valor de F es suficientemente elevado.", "Se rechaza la Ho si el valor de F es suficientemente elevado."], "a": [0, 1, 2, 4], "j": "Un F alto indica que las medias difieren mucho entre grupos y que la variabilidad se debe al factor; por eso se rechaza H0 cuando F es suficientemente elevado.", "tip": "F alto → las medias difieren → se rechaza H0."}, {"c": "5.1", "m": 0, "q": "En un estudio educativo se compraron tres metodos de enseñar matematicas avanzadas; para evaluar los resultados se administró una prueba de 30 preguntas a los 36 alumnos participantes en el estudio de a 12 por grupo. ¿Cuál es la variable respuesta y la explicativa en este estudio?", "o": ["Variable de respuesta: resultado en la prueba; Variable explicativa: método de enseñanza", "Variable de respuesta: método de enseñanza; Variable explicativa: resultado en la prueba", "Variable de respuesta: resultado en la prueba; Variable explicativa: cantidad de alumnos"], "a": [0], "j": "La variable de respuesta (dependiente) es el resultado en la prueba; la explicativa (independiente) es el método de enseñanza que se manipula.", "ej": "Método de enseñanza (lo que cambio) → nota en la prueba (lo que mido).", "tip": "Respuesta = lo que MIDO. Explicativa = lo que MANIPULO."}, {"c": "5.1", "m": 0, "q": "La ANOVA sirve para comparar:", "o": ["Las medias de 3 o más poblaciones.", "Las medias de 2 o más poblaciones.", "Las medias de 3 o más muestras."], "a": [0], "j": "ANOVA sirve para comparar las medias de tres o más poblaciones simultáneamente.", "tip": "ANOVA = 3 o más medias. Para solo 2 alcanza una t."}, {"c": "5.1", "m": 0, "q": "Cuál de los siguientes aspectos es crítico si se realizan comparaciones de dos en dos para sacar conclusiones referidas a la diferencia de más de dos medias entre sí?", "o": ["Al hacer un mayor número de contrastes aumenta el error de tipo 1", "Al hacer un mayor número de contrastes aumenta el error de tipo 2", "Al hacer un menor número de contrastes aumenta el error de tipo 1"], "a": [0], "j": "Hacer muchas comparaciones de a pares infla el error de tipo I (rechazar H0 siendo verdadera). Por eso se prefiere ANOVA con un único contraste.", "tip": "Muchas comparaciones de a pares inflan el error tipo I (falsos positivos)."}, {"c": "5.1", "m": 1, "q": "Cuáles las siguientes son hipótesis alternativas válidas de una prueba Anova seleccione las tres respuestas correctas", "o": ["HA: al menos una de las medias poblacionales es diferente.", "HA: no todas las medias poblacionales son iguales.", "Todas las medias poblacionales son iguales", "Todas las medias poblacionales son diferentes entre sí", "HA: una o más de las medias poblacionales es diferente."], "a": [0, 1, 4], "j": "Las hipótesis alternativas válidas afirman que al menos una media difiere / no todas son iguales. Todas equivalen a negar la igualdad total.", "tip": "HA siempre niega la igualdad total: 'al menos una difiere'."}, {"c": "5.1", "m": 1, "q": "Para utilizar la prueba F del análisis de varianza. Qué supuestos se deben cumplir acerca la población? Seleccione las cuatro respuestas correctas.", "o": ["Normalidad.", "Confianza.", "Independencia.", "Aleatoriedad.", "Homogeneidad de la varianza."], "a": [0, 2, 3, 4], "j": "La prueba F de ANOVA exige normalidad, independencia, aleatoriedad y homogeneidad de varianzas (homocedasticidad) en las poblaciones.", "tip": "NIAH: Normalidad, Independencia, Aleatoriedad, Homogeneidad de varianzas."}, {"c": "5.1", "m": 1, "q": "Cuáles son los supuestos básicos del modelo ANOVA? Seleccione las 4 correctas:", "o": ["Los datos fueron obtenidos de manera aleatoria", "Los errores están normalmente distribuidos con media 0", "Los errores tienen varianza constante", "Los errores son independientes", "Los errores están normalmente distribuidos con media 1"], "a": [0, 1, 2, 3], "j": "Los supuestos del modelo: datos aleatorios, errores con distribución normal de media 0, varianza constante e independientes entre sí.", "tip": "Errores normales (media 0), varianza constante e independientes; datos aleatorios."}, {"c": "5.1.1", "m": 1, "q": "En la ANOVA pueden distinguirse. Seleccione 4 respuestas correctas", "o": ["La media global", "La variación afuera", "La variación dentro", "La variación entre", "La variación total"], "a": [0, 2, 3, 4], "j": "En ANOVA se distinguen la media global y tres fuentes de variación: entre grupos, dentro de los grupos y total.", "tip": "Media global + 3 variaciones: dentro, entre y total."}, {"c": "5.1.1", "m": 0, "q": "¿Cómo está representada la variación total en el análisis de varianza de un factor?", "o": ["La variación total está representado por la suma de cuadrados totales.", "La variación total está representado por la suma de cuadrados entre grupos.", "La variación total está representado por la suma de cuadrados dentro de los grupos."], "a": [0], "j": "La variación total se representa por la suma de cuadrados total (SCT), que mide la dispersión de todos los datos respecto de la media global.", "tip": "Total → Suma de Cuadrados Total (SCT)."}, {"c": "5.1.1", "m": 0, "q": "¿Cómo está representada la variación entre grupos en el análisis de varianza de un factor?", "o": ["La variación entre grupos está representado por la suma de cuadrados entre grupos.", "La variación entre grupos está representada por la suma de cuadrados dentro de los grupos.", "La variación entre grupos está representada por la suma de cuadrados totales."], "a": [0], "j": "La variación entre grupos se representa por la suma de cuadrados entre grupos (SCE), que capta las diferencias entre las medias de cada grupo.", "tip": "Entre grupos → Suma de Cuadrados Entre (SCE)."}, {"c": "5.1.4", "m": 0, "q": "En un experimento de compararon tres métodos para capacitar a empleados nuevos de una empresa de servicios; para evaluar los resultados de cada uno se administró una prueba 50 ítems relacionados con la tarea a desarrollar, a cada uno de los 24 integrantes repartidos en grupos de 8 personas cada uno. ¿Cuál de las siguientes puede ser una variable de respuesta en este estudio?", "o": ["Cantidad promedio de respuestas correctas.", "Cantidad total de respuestas correctas.", "Cantidad aleatoria de respuestas correctas."], "a": [0], "j": "Una variable de respuesta válida es la cantidad promedio de respuestas correctas: es lo que se mide para comparar los métodos.", "tip": "La respuesta es lo que se mide: el promedio de respuestas correctas."}, {"c": "5.1.4", "m": 0, "q": "En un experimento de compararon tres métodos para capacitar a empleados nuevos de una empresa de servicios; para evaluar los resultados de cada uno se administró una prueba 50 ítems relacionados con la tarea a desarrollar, a cada uno de los 24 integrantes repartidos en grupos de 8 personas cada uno. ¿Qué tipo de prueba recomienda realizar?", "o": ["ANOVA", "ANCOVA", "MANOVA"], "a": [0], "j": "Al comparar las medias de tres grupos, la prueba indicada es ANOVA (análisis de la varianza).", "tip": "Comparar 3 medias → ANOVA."}, {"c": "5.1.5", "m": 0, "q": "¿Cuál es el estadístico de prueba F para probar la razón de dos varianzas?", "o": ["Es igual a la varianza de la muestra 1 (la varianza muestral más grande) dividida la varianza de la muestra 2 (la varianza muestral más pequeña).", "Es igual a la varianza de la muestra 1 (la varianza muestral más pequeña) dividida la varianza de la muestra 2 (la varianza muestral más grande).", "Es igual a la varianza de la muestra 1 (la varianza muestral más grande) multiplicada la varianza de la muestra 2 (la varianza muestral más pequeña)."], "a": [0], "j": "El estadístico F para la razón de dos varianzas se calcula dividiendo la varianza muestral mayor entre la menor.", "tip": "F = varianza mayor ÷ varianza menor (queda ≥ 1)."}, {"c": "5.1.5", "m": 0, "q": "Cómo se calcula el estadístico de prueba FESTAD del análisis de varianza de un factor?", "o": ["F ESTAD = CME/CMD", "F ESTAD = CMD/CME", "F ESTAD = CME/CMT"], "a": [0], "j": "El F de ANOVA de un factor es F = CME/CMD: cuadrado medio entre grupos dividido por el cuadrado medio dentro de los grupos.", "tip": "F = CME/CMD: Entre arriba, Dentro abajo."}, {"c": "5.1.6", "m": 0, "q": "el procedimiento de Tukey-kramer permite hacer comparaciones simultáneas entre todos los pares de grupos:", "o": ["Verdadero", "Falso"], "a": [0], "j": "Verdadero: el procedimiento de Tukey-Kramer realiza comparaciones múltiples simultáneas entre todos los pares de grupos tras un ANOVA significativo.", "tip": "Tukey-Kramer = comparar TODOS los pares tras un ANOVA significativo."}, {"c": "5.3.1", "m": 0, "q": "¿Cómo está representada la variación dentro de los grupos en el análisis de varianza de un factor?", "o": ["La variación dentro de los grupos está representada por la suma de cuadrados dentro de los grupos", "La variación dentro de los grupos está representada por la suma de cuadrados entre los grupos", "La variación dentro de los grupos está representada por la suma de cuadrados totales Módulo 6 — Regresión y Correlación"], "a": [0], "j": "La variación dentro de los grupos se representa por la suma de cuadrados dentro (SCD), que mide la dispersión interna de cada grupo.", "tip": "Dentro → Suma de Cuadrados Dentro (SCD)."}, {"c": "6.1", "m": 0, "q": "La regresión lineal simple es la que utiliza 7 variables numéricas independientes para pronosticar una variable numérica dependiente.", "o": ["Falso", "Verdadero"], "a": [0], "j": "Es falso: la regresión lineal simple usa una sola variable independiente (no 7) para pronosticar la dependiente.", "tip": "Simple = UNA sola variable independiente. '7 variables' es falso."}, {"c": "6.1", "m": 0, "q": "Se realizó un estudio para una empresa, y se determinó una estimación de su función de costos, en el tramo de producción (5.000; 30.000) unidades, Costo de producción -15,65 + 1,29 Cantidad producida ¿Cuál es el costo de producción estimado si se producen 31.500 unidades?", "o": ["No puede determinarse en base a la información disponible.", "No puede determinarse en base a la estimación realizada.", "No puede determinarse en base a los datos del tramo."], "a": [0], "j": "31.500 unidades queda fuera del tramo estudiado (5.000; 30.000). Extrapolar fuera del rango de los datos no es válido, así que no puede determinarse.", "ej": "Modelo válido para 5.000–30.000 u. Pedir 31.500 u cae fuera del rango → no se puede estimar.", "tip": "Fuera del rango de los datos no se estima: extrapolar es inválido."}, {"c": "6.1", "m": 0, "q": "El análisis de regresión permite identificar el tipo de relación matemática que existe entre una variable dependiente y una variable independiente con la finalidad de cuantificar el efecto que los cambios en esta última tienen sobre la primera, así como para identificar observaciones poco comunes.", "o": ["Verdadero", "Falso"], "a": [0], "j": "Verdadero: la regresión identifica la relación matemática entre X e Y, cuantifica el efecto de X sobre Y y ayuda a detectar observaciones atípicas.", "tip": "Regresión cuantifica el efecto de X en Y y detecta atípicos. Verdadero."}, {"c": "6.1", "m": 0, "q": "En el análisis de regresión cómo se llama la variable que se desea pronosticar?", "o": ["Variable Dependiente.", "Variable Independiente.", "Variable de predicción."], "a": [0], "j": "La variable que se desea pronosticar es la variable dependiente (Y); la independiente (X) es la que se usa para predecirla.", "tip": "La que se PRONOSTICA es la dependiente (Y): 'depende' del modelo."}, {"c": "6.1", "m": 0, "q": "¿Cual es el concepto de una regresión múltiple?", "o": ["La regresión múltiple relaciona una variable dependiente con varias variables independientes", "La regresión múltiple relaciona una variable independiente con varias variables dependientes", "La regresión múltiple relaciona una variable dependiente con varias variables dependientes"], "a": [0], "j": "La regresión múltiple relaciona una variable dependiente con varias variables independientes a la vez.", "tip": "Múltiple → muchas X, una sola Y."}, {"c": "6.1", "m": 0, "q": "Es el análisis de la relación o dependencia entre variables sirve para explicar y predecir la variable dependiente Y a partir de valores y observan independiente X:", "o": ["Test de hipótesis", "Test de dependencia", "Test de relación"], "a": [0], "j": "El análisis de la relación o dependencia entre variables se enmarca en el test de hipótesis sobre los parámetros del modelo."}, {"c": "6.1", "m": 0, "q": "¿Cuál es el concepto de una regresión simple?", "o": ["La regresión simple relación una variable dependiente con una sola variable independiente.", "La regresión simple relación una variable independiente con una sola variable dependiente.", "La regresión simple relación una variable dependiente con una sola variable dependiente."], "a": [0], "j": "La regresión simple relaciona una variable dependiente con una sola variable independiente.", "tip": "Simple → una X, una Y."}, {"c": "6.1", "m": 0, "q": "Es el análisis de la relación o dependencia entre variables, sirve para explicar y predecir la variable dependiente... a partir de valores observados en la independiente (x).", "o": ["Regresión lineal simple", "Regresión lineal múltiple", "Regresión lineal compleja"], "a": [0], "j": "Explicar y predecir Y a partir de una única X observada corresponde a la regresión lineal simple.", "tip": "Una X para predecir Y → regresión lineal simple."}, {"c": "6.1", "m": 0, "q": "¿Cómo podemos visualizar la ecuación de estimación simple?", "o": ["La ecuación de estimación simple la podemos visualizar como una línea en una gráfica.", "La ecuación de estimación simple la podemos visualizar como una curva en una gráfica.", "La ecuación de estimación simple la podemos visualizar como un punto en una gráfica."], "a": [0], "j": "La ecuación de estimación simple se visualiza como una línea recta en una gráfica (eje X vs eje Y).", "tip": "La estimación simple se dibuja como una recta en el plano."}, {"c": "6.1", "m": 0, "q": "¿Cuál de las siguientes actividades permite mejorar la precisión de la estimación de una regresión lineal?", "o": ["Aumentar el tamaño de la muestra.", "Disminuir el tamaño de la muestra.", "Aumentar el tamaño de la población."], "a": [0], "j": "Aumentar el tamaño de la muestra mejora la precisión de las estimaciones al reducir el error estándar.", "tip": "Más muestra → menos error → más precisión."}, {"c": "6.1", "m": 0, "q": "Cuál es el objetivo del análisis de regresión?", "o": ["El análisis de regresión tiene como objetivo estimar la relación que vincula a una variable dependiente con una o varias variables independientes.", "El análisis de regresión tiene como objetivo estimar la relación que vincula a una variable independiente con una o varias variables dependientes.", "El análisis de regresión tiene como objetivo estimar la relación que vincula a una variable dependiente con una o varias variables dependientes."], "a": [0], "j": "El objetivo de la regresión es estimar la relación que vincula la variable dependiente con una o más independientes.", "tip": "Regresión estima cómo influye X en Y."}, {"c": "6.1", "m": 1, "q": "Cuáles son los tipos de relaciones encontradas en los diagramas de dispersión? selección en las 4 respuestas correctas:", "o": ["Relación lineal positiva / negativa", "relación logarítmica positiva / negativa.", "Relación curvilínea positiva / negativa", "Sin relación entre X Y", "Relación curvilínea forma de u"], "a": [0, 2, 3, 4], "j": "Los diagramas de dispersión pueden mostrar: relación lineal (positiva/negativa), curvilínea (positiva/negativa), curvilínea en forma de U, o ausencia de relación.", "tip": "Lineal, curvilínea, en forma de U, o sin relación. (La logarítmica NO entra)."}, {"c": "6.1", "m": 1, "q": "En el análisis de regresión cómo se llaman las variables que se utilizan? Seleccione las 2 (dos) respuestas correctas:", "o": ["Variable independiente.", "Variable dependiente", "Variable de regresión"], "a": [0, 1], "j": "En regresión se usan dos tipos de variables: la independiente (explicativa) y la dependiente (a pronosticar).", "tip": "Solo dos roles: independiente (X) y dependiente (Y)."}, {"c": "6.1", "m": 0, "q": "Se necesita estimar el precio de una vivienda en función de su superficie. Qué tipo de análisis recomendaría?", "o": ["Regresión lineal simple con la superficie como variable independiente y el precio de la vivienda como variable dependiente.", "Regresión lineal simple con la superficie como variable dependiente y el precio de la vivienda como variable independiente.", "Regresión lineal múltiple con la superficie como variable independiente y el precio de la vivienda como variable dependiente."], "a": [0], "j": "Estimar el precio (Y) en función de la superficie (X) es un caso de regresión lineal simple, con la superficie como variable independiente.", "ej": "Más m² → mayor precio: la superficie es la independiente y el precio la dependiente.", "tip": "Una causa (superficie) sobre un efecto (precio) → regresión simple."}, {"c": "6.1", "m": 0, "q": "Incrementos que se produce en la variable Y cuando la variable X aumenta una unidad?", "o": ["Pendiente estimada en una regresión lineal", "Pendiente estimada en una regresión múltiple", "Pendiente estimada en una regresión compleja"], "a": [0], "j": "El incremento en Y por cada unidad que aumenta X es la pendiente estimada (b1) de la recta de regresión.", "tip": "Cuánto sube Y por cada +1 de X → la pendiente (b1)."}, {"c": "6.1", "m": 0, "q": "Se realizó un estudio para una empresa, y se determinó una estimación de su función de costos, en el tramo de producción (5.000; 30.000) unidades, Costo de producción -15,65 + 1,29 Cantidad producida ¿Cuál es el costo de producción estimado si se producen 18.000 unidades?", "o": ["$23.204,35.", "$23.240,35.", "$23.204,53."], "a": [0], "j": "Reemplazando en la ecuación: Costo = −15,65 + 1,29 × 18.000 = 23.204,35. El valor está dentro del rango válido, así que sí puede estimarse."}, {"c": "6.1", "m": 0, "q": "¿Qué es el error estándar de la estimación?", "o": ["Es la desviación estándar alrededor de la línea de predicción.", "Es la desviación estándar alrededor de la línea de estimación.", "Es la desviación estándar alrededor de la línea de regresión."], "a": [0], "j": "El error estándar de la estimación es la desviación estándar de los datos alrededor de la línea de predicción: mide la dispersión de los residuos.", "tip": "Error estándar = dispersión de los puntos alrededor de la recta."}, {"c": "6.1.1", "m": 0, "q": "La recta de regresión:", "o": ["Pasa necesariamente por el punto cuyos componentes son las medias de ambas variables.", "Pasa necesariamente por el punto cuyos componentes son las medias de una de las variables.", "Pasa necesariamente por el punto cuyos componentes son las medianas de ambas variables."], "a": [0], "j": "La recta de regresión pasa siempre por el punto (X̄, Ȳ), es decir, por las medias de ambas variables.", "tip": "La recta SIEMPRE pasa por el punto de las medias (X̄, Ȳ)."}, {"c": "6.1.1", "m": 1, "q": "Cómo está conformada la ecuación de regresión Simple (la línea de predicción) seleccione las cuatro respuestas correctas:", "o": ["Pendiente de la muestra", "Intersección de la muestra con el eje Y", "Valor X para observación i", "Valor de la frecuencia esperada.", "Valor estimado de Y para la observación i"], "a": [0, 1, 2, 4], "j": "La línea de predicción se compone de: la intersección con el eje Y, la pendiente, el valor X de cada observación y el valor estimado Ŷ.", "tip": "Pendiente, intersección con Y, X de la observación y el Ŷ estimado."}, {"c": "6.1.1", "m": 1, "q": "En la estimación mediante la línea de regresión ¿Cuál es la ecuación para una recta? Selección 4 respuestas correctas.", "o": ["a (intersección en Y)", "Y (variable dependiente)", "Se (error estándar de la estimación)", "b (dependiente de la línea)", "X (variable independiente)"], "a": [0, 1, 3, 4], "j": "La ecuación de la recta incluye: Y (dependiente), X (independiente), a (intersección en Y) y b (pendiente).", "tip": "Y = a + bX: dependiente, intersección, pendiente, independiente."}, {"c": "6.1.1", "m": 0, "q": "¿Cuál es la ecuación de regresión lineal simple?", "o": ["(la línea de predicción) Yi = b0 + b1 Xi.", "(la línea de predicción) Yi = b0 - b1 Xi.", "(la línea de predicción) Yi = b1 + b0 Xi."], "a": [0], "j": "La ecuación de regresión lineal simple (línea de predicción) es Ŷi = b0 + b1·Xi.", "tip": "Ŷ = b0 + b1·X: intersección más pendiente por X."}, {"c": "6.1.1", "m": 0, "q": "Porque se utiliza el método de mínimos cuadrados para estimar los parámetros de la regresión?:", "o": ["Las estimaciones que producen tienen propiedades estadísticas deseables.", "Las estimaciones que producen tienen propiedades estadísticas no deseables.", "Las estimaciones que producen tienen propiedades matemáticas deseables."], "a": [0], "j": "Se usa mínimos cuadrados porque las estimaciones que produce poseen propiedades estadísticas deseables (insesgadas y de mínima varianza).", "tip": "Se usa MCO porque da estimadores insesgados y de mínima varianza."}, {"c": "6.1.1", "m": 1, "q": "cuando se utiliza el método de mínimos cuadrados para determinar los coeficientes de regresión de un conjunto de datos Cuáles son las 3 medidas de variación necesarias para calcular? seleccione las tres respuestas correctas", "o": ["Suma de cuadrados de error (SCE)", "Suma de cubos total (SCT)", "Suma de cuadrados de regresión (SCR)", "Suma de cuadrados total (SCT)"], "a": [0, 2, 3], "j": "Las tres medidas de variación necesarias son: suma de cuadrados total (SCT), de regresión (SCR) y del error (SCE).", "tip": "Tres sumas: Error (SCE), Regresión (SCR), Total (SCT). Y SCT = SCR + SCE."}, {"c": "6.1.2", "m": 0, "q": "El coeficiente de determinación:", "o": ["Es conocido también como coeficiente de regresión.", "Es conocido también como la línea de regresión.", "Es conocido también como la recta de regresión."], "a": [0], "j": "El coeficiente de determinación (R²) también se conoce como coeficiente de regresión y mide la proporción de varianza explicada.", "tip": "Coeficiente de determinación = coeficiente de regresión = R²."}, {"c": "6.1.2", "m": 0, "q": "¿Cuál es el coeficiente de determinación?", "o": ["Es igual a la suma de cuadrados de regresión dividido la suma de cuadrados total.", "Es igual a la suma de cuadrados de error dividido la suma de cuadrados total.", "Es igual a la suma de cuadrados de regresión dividido la suma de cuadrados de error."], "a": [0], "j": "R² = suma de cuadrados de regresión (SCR) / suma de cuadrados total (SCT): la fracción de variación explicada por el modelo.", "tip": "R² = Regresión / Total (SCR/SCT): la proporción explicada."}, {"c": "6.1.2", "m": 0, "q": "el coeficiente de determinación:", "o": ["No depende de la unidad de medida de las variables.", "Sí depende de la unidad de medida de las variables.", "No depende de la cantidad de variables."], "a": [0], "j": "El R² es adimensional: no depende de las unidades de medida de las variables, por lo que es comparable entre modelos.", "tip": "R² es adimensional: no cambia si cambiás las unidades."}, {"c": "6.1.2", "m": 0, "q": "El coeficiente de determinación:", "o": ["Mide el porcentaje de varianza explicada por la recta de regresión.", "Mide el porcentaje de varianza explicada por la línea de regresión.", "Mide el porcentaje de varianza explicada por el error de regresión."], "a": [0], "j": "El R² mide el porcentaje de la varianza de Y que queda explicado por la recta de regresión.", "tip": "R² = porcentaje de la varianza de Y que explica la recta."}, {"c": "6.1.3", "m": 1, "q": "Los supuestos de la regresión son importante para la validez de cualquier conclusión Cuáles son esos seleccione las 4 respuestas correctas:", "o": ["Igualdad de la varianza", "Linealidad", "Independencia de los errores", "Contingencia", "Normalidad del error"], "a": [0, 1, 2, 4], "j": "Los supuestos de la regresión son: linealidad, independencia de los errores, igualdad de varianza (homocedasticidad) y normalidad de los errores.", "tip": "LINE: Linealidad, Independencia, Normalidad, Equal variance (igualdad de varianza)."}, {"c": "6.1.3", "m": 0, "q": "Cómo son los parámetros del modelo poblacional de regresión lineal (pendiente y ordenada al origen)", "o": ["Constantes.", "Variables.", "Aleatorios."], "a": [0], "j": "Los parámetros poblacionales (pendiente y ordenada al origen) son constantes: valores fijos que el modelo busca estimar.", "tip": "Los parámetros (β) son CONSTANTES fijas; vos los estimás con la muestra."}, {"c": "6.1.4", "m": 0, "q": "¿Qué evalúa el análisis residual?", "o": ["En forma visual los supuestos de la regresión y ayuda a determinar si el modelo de regresión seleccionado es el adecuado.", "En forma visual los parámetros de la regresión y ayuda a determinar si el modelo de regresión seleccionado es el adecuado.", "En forma visual los supuestos de la regresión y ayuda a determinar si la muestra seleccionada es la adecuada."], "a": [0], "j": "El análisis residual evalúa visualmente los supuestos de la regresión y ayuda a decidir si el modelo elegido es adecuado.", "tip": "Los residuos te muestran, a ojo, si el modelo elegido sirve."}, {"c": "6.1.4", "m": 0, "q": "El recibo o valor del error estimado (ei) Cuál es su ecuación?", "o": ["ei = Yi - Yî", "ei = Yî - Yi", "ei = Yi + Yî"], "a": [0], "j": "El error o residuo estimado es ei = Yi − Ŷi: diferencia entre el valor observado y el valor predicho por la recta.", "ej": "Si el valor real es 10 y el modelo predice 8, el residuo es 10 − 8 = +2.", "tip": "Residuo = real menos predicho (Y − Ŷ)."}, {"c": "6.1.5", "m": 0, "q": "¿Cuáles son los pasos para determinar la regresión múltiple?", "o": ["Definir la ecuación de regresión múltiple, examinar el error estándar de estimación para la regresión múltiple, y aplicar el análisis de correlación múltiple para averiguar con qué eficacia describe la ecuación de regresión de datos observados.", "Definir la ecuación de regresión múltiple, examinar el coeficiente de determinación para la regresión múltiple, y aplicar el análisis de correlación múltiple para averiguar con qué eficacia describe la ecuación de regresión de datos observados.", "Examinar el error estándar de estimación para la regresión múltiple, definir la ecuación de regresión múltiple, y aplicar el análisis de correlación múltiple para averiguar con qué eficacia describe la ecuación de regresión de datos observados."], "a": [0], "j": "Los pasos de la regresión múltiple: definir la ecuación, examinar el error estándar de estimación y aplicar el análisis de correlación múltiple.", "tip": "Definir la ecuación → revisar el error estándar → correlación múltiple."}, {"c": "6.1.5", "m": 0, "q": "Qué son los modelos de regresión múltiple?:", "o": ["Son aquellos que emplean dos o más variables independientes para pronosticar el valor de una variable dependiente.", "Son aquellos que emplean dos o más variables dependientes para pronosticar el valor de una variable independiente.", "Son aquellos que emplean dos o más variables independientes para pronosticar el valor de una variable independiente."], "a": [0], "j": "Los modelos de regresión múltiple emplean dos o más variables independientes para pronosticar una variable dependiente.", "tip": "Múltiple = dos o más X para una Y."}, {"c": "6.1.5", "m": 0, "q": "Cuál es la ecuación del modelo de regresión múltiple con dos variables independientes", "o": ["Yi = ß0 + ß1 X1i + ß2 X2i + εi", "Yi = ß0 + ß1 X1i - ß2 X2i + εi", "Yi = ß0 + ß1 Y1i + ß2 Y2i + εi"], "a": [0], "j": "El modelo con dos independientes es Yi = β0 + β1·X1i + β2·X2i + εi.", "tip": "Una β por cada X, más β0 y el error ε."}, {"c": "6.1.5", "m": 0, "q": "Cómo se conoce el proceso por el cual podemos servirnos de más de una variable independiente para estimar la variable dependiente?", "o": ["Regresión múltiple y análisis de correlación.", "Regresión simple y análisis de correlación.", "Regresión múltiple y análisis de varianza."], "a": [0], "j": "Servirse de más de una variable independiente para estimar la dependiente se conoce como regresión múltiple y análisis de correlación.", "tip": "Servirse de varias X para estimar Y → regresión múltiple."}, {"c": "6.1.5", "m": 0, "q": "Cuáles son las ventas estimadas para un supermercado que cobra 79 centavos (x1i), durante un mes en que los gastos ascienden a $400 (x2i)? para b0 igual 5837,5208; b1= 53, 2173; b2= 3,6131 utilizando la ecuación de regresión múltiple.", "o": ["3078.5", "3708.5", "3087.5"], "a": [0], "j": "Reemplazando: Ŷ = 5837,52 + 53,22×79 + 3,61×400 ≈ 3078,5 (según los coeficientes dados)."}, {"c": "6.1.5", "m": 0, "q": "Cuál es la principal ventaja de la regresión múltiple?", "o": ["La principal ventaja es que nos permite utilizar una parte mayor de la información de que disponemos para estimar la variable dependiente.", "La principal ventaja es que nos permite utilizar una parte menor de la información de que disponemos para estimar la variable dependiente.", "La principal ventaja es que nos permite utilizar una parte mayor de la información de que disponemos para estimar la variable independiente."], "a": [0], "j": "La principal ventaja de la regresión múltiple es aprovechar más información disponible (varias variables) para estimar la dependiente.", "tip": "Más variables = más información aprovechada para estimar Y."}, {"c": "6.2", "m": 0, "q": "¿Qué indica el coeficiente de correlación cuando tiende a 1 en valor absoluto?", "o": ["Indica un fuerte grado de asociación lineal entre variables.", "Indica un fuerte grado de asociación no lineal entre variables.", "Indica un débil grado de asociación lineal entre variables."], "a": [0], "j": "Cuando |r| tiende a 1, indica un fuerte grado de asociación lineal entre las variables.", "tip": "|r| cerca de 1 = relación lineal FUERTE."}, {"c": "6.2", "m": 0, "q": "Cómo es la asociación lineal entre x, y cuando el coeficiente de correlación Exactamente igual a 1 o a - 1?", "o": ["Cuando el coeficiente de correlación es exactamente igual a 1 o a -1, existe asociación lineal perfecta entre X Y", "Cuando el coeficiente de correlación es exactamente igual a 1 o a -1, existe asociación lineal nula entre X Y", "Cuando el coeficiente de correlación es exactamente igual a 0, existe asociación lineal perfecta entre X Y"], "a": [0], "j": "Si r es exactamente 1 o −1, existe asociación lineal perfecta: todos los puntos caen exactamente sobre una recta.", "tip": "r exactamente ±1 = todos los puntos sobre la recta (asociación perfecta)."}, {"c": "6.2", "m": 0, "q": "Qué indica el coeficiente de correlación cuando tiende a cero (0) en valor absoluto?", "o": ["Indica un fuerte grado de asociación exponencial entre variables.", "Indica un débil grado de asociación exponencial entre variables.", "Indica un fuerte grado de separación exponencial entre variables."], "a": [0], "j": "Cuando |r| tiende a 0, indica ausencia de asociación lineal (no exponencial); las variables no muestran relación lineal."}, {"c": "6.2", "m": 1, "q": "Aunque el coeficiente correlación lineal indica que la relación entre ambas variables es fuerte seleccione las 4 correctas:", "o": ["El valor no nos da idea del sentido de la relación lineal.", "Generalmente requiere un modelo teórico que vincule su interrelación.", "No establece cuál de las variables es condicionada por la otra.", "Es importante contar con un test que indique cuan significativa es la relación detectada.", "No significa que esté determinada la causalidad entre ellas."], "a": [1, 2, 3, 4], "j": "Una correlación fuerte no implica causalidad: no dice qué variable condiciona a la otra, requiere un modelo teórico y un test de significación.", "tip": "Correlación ≠ causalidad: un r alto no dice quién causa a quién."}, {"c": "6.2", "m": 0, "q": "Para que podemos utilizar el coeficiente de correlación?", "o": ["Para determinar si existe una relación lineal estadísticamente significativa entre X / Y", "Para determinar si existe una relación lineal estadísticamente significativa entre X", "Para determinar si existe una relación lineal estadísticamente significativa entre Y"], "a": [0], "j": "El coeficiente de correlación se usa para determinar si existe una relación lineal estadísticamente significativa entre X e Y.", "tip": "r evalúa si hay relación lineal significativa entre X e Y."}, {"c": "6.2", "m": 0, "q": "Explique cuál es el objetivo del análisis de correlación?", "o": ["Evaluar el grado de asociación entre dos variables.", "Evaluar el grado de asociación entre tres variables.", "Evaluar el grado de dependencia entre dos variables."], "a": [0], "j": "El objetivo del análisis de correlación es evaluar el grado de asociación entre dos variables.", "tip": "Correlación = medir cuán asociadas están dos variables."}, {"c": "6.2.1", "m": 0, "q": "El coeficiente de determinación:", "o": ["Es el cuadrado del coeficiente de correlación.", "Es el cubo del coeficiente de correlación.", "Es la raíz del coeficiente de correlación."], "a": [0], "j": "El coeficiente de determinación (R²) es el cuadrado del coeficiente de correlación (r): R² = r².", "ej": "Si r=0,8 → R² = 0,8² = 0,64 → el modelo explica el 64%.", "tip": "R² = r². La determinación es el CUADRADO de la correlación."}, {"c": "6.2.1", "m": 1, "q": "El coeficiente de correlación de Pearson seleccione las dos respuestas correctas:", "o": ["Tiende a uno cuando no existe relación lineal entre ambas variables", "Tiende a cero cuando no existe relación lineal entre ambas variables", "Carece de unidad de medida (por ser un coeficiente)"], "a": [1, 2], "j": "El r de Pearson tiende a 0 cuando no hay relación lineal y carece de unidad de medida (es un número puro entre −1 y 1).", "tip": "Pearson: tiende a 0 sin relación lineal y es un número puro (sin unidad)."}, {"c": "6.2.1", "m": 0, "q": "el coeficiente de correlación de Pearson Sólo toma valores comprendidos entre cero y uno:", "o": ["Falso", "Verdadero"], "a": [0], "j": "Es falso: el r de Pearson toma valores entre −1 y 1 (incluye negativos), no solo entre 0 y 1.", "tip": "r va de −1 a 1 (incluye negativos). 'Solo 0 a 1' es falso."}, {"c": "6.2.2", "m": 0, "q": "Cuando el coeficiente de correlación de Pearson, en valor absoluto, está próximo a 1, existe una correlación muy fuerte entre las variables.", "o": ["Verdadero", "Falso"], "a": [0], "j": "Verdadero: cuando |r| está próximo a 1, la correlación lineal entre las variables es muy fuerte.", "tip": "|r| cerca de 1 = correlación muy fuerte. Verdadero."}, {"c": "6.2.2", "m": 1, "q": "Indicar que afirmaciones son correctas acerca del valor del coeficiente de correlación y su respecto diagrama de dispersión seleccione las cuatro respuestas correctas:", "o": ["Cuando el diagrama de dispersión exhibe la relación lineal con pendiente negativa el coeficiente de correlación de Pearson tiende a -1", "Cuando el diagrama de dispersión exhibe una forma lineal paralela, el eje de las abscisas el coeficiente de correlación de Pearson tiende a 1.", "Cuando el diagrama de dispersión exhibe la relación lineal con pendiente positiva el coeficiente de correlación de Pearson tiende a 1", "Cuando el diagrama dispersión no exhibe ningún tipo de relación el coeficiente de correlación de Pearson tiende a cero.", "Cuando diagrama de dispersión exhibe pero esta no es lineal el coeficiente de correlación de Pearson tiende a 0."], "a": [0, 2, 3, 4], "j": "Según el diagrama: pendiente positiva → r tiende a 1; pendiente negativa → r tiende a −1; sin relación o relación no lineal → r tiende a 0.", "tip": "Pendiente + → r→1; pendiente − → r→−1; sin relación o no lineal → r→0."}];
+const STORE_KEY = 'estad2_hmv_quiz_v1';
+
+// ===== Theme by time of day =====
+const THEME_KEY = 'estad2_hmv_theme';
+const THEMES = {
+  dawn:  {ico:'🌅', lbl:'Amanecer'},
+  day:   {ico:'☀️', lbl:'Día'},
+  dusk:  {ico:'🌇', lbl:'Atardecer'},
+  night: {ico:'🌙', lbl:'Noche'},
+};
+const CYCLE = ['auto','dawn','day','dusk','night'];
+
+function themeForHour(h){
+  if(h>=5  && h<9 ) return 'dawn';
+  if(h>=9  && h<18) return 'day';
+  if(h>=18 && h<21) return 'dusk';
+  return 'night';
+}
+function getThemePref(){
+  try{return localStorage.getItem(THEME_KEY)||'auto'}catch(e){return 'auto'}
+}
+function setThemePref(p){try{localStorage.setItem(THEME_KEY,p)}catch(e){}}
+
+let autoTimer=null;
+function applyTheme(){
+  const pref=getThemePref();
+  const effective = (pref==='auto') ? themeForHour(new Date().getHours()) : pref;
+  document.documentElement.setAttribute('data-theme', effective);
+  const t=THEMES[effective];
+  const ico=document.getElementById('themeIco');
+  const lbl=document.getElementById('themeLbl');
+  if(ico) ico.textContent=t.ico;
+  if(lbl) lbl.textContent = (pref==='auto') ? t.lbl+' · auto' : t.lbl;
+  // si está en auto, revisar cada 5 min por si cambia la franja
+  if(autoTimer){clearInterval(autoTimer);autoTimer=null;}
+  if(pref==='auto'){
+    autoTimer=setInterval(()=>{
+      const e2=themeForHour(new Date().getHours());
+      if(document.documentElement.getAttribute('data-theme')!==e2) applyTheme();
+    },300000);
+  }
+}
+function cycleTheme(){
+  const cur=getThemePref();
+  const idx=CYCLE.indexOf(cur);
+  const nextPref=CYCLE[(idx+1)%CYCLE.length];
+  setThemePref(nextPref);
+  applyTheme();
+}
+applyTheme();
+
+// ---- Persistence ----
+function loadStore(){
+  try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return {}}
+}
+function saveStore(s){try{localStorage.setItem(STORE_KEY,JSON.stringify(s))}catch(e){}}
+let store = loadStore(); // { part0:[{pct,ok,total,ts}], part1:[...], part2:[...] }
+
+// ---- Build parts (deterministic split, stable across sessions) ----
+const N = QUESTIONS.length;
+const HALF = Math.ceil(N/2);
+// index lists
+const PARTS = {
+  0: QUESTIONS.map((_,i)=>i),
+  1: QUESTIONS.map((_,i)=>i).slice(0,HALF),
+  2: QUESTIONS.map((_,i)=>i).slice(HALF)
+};
+document.getElementById('meta1').textContent = PARTS[1].length+' preguntas';
+document.getElementById('meta2').textContent = PARTS[2].length+' preguntas';
+
+// ---- Utils ----
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function eqSet(a,b){if(a.length!==b.length)return false;const s=new Set(a);return b.every(x=>s.has(x))}
+function fmtPct(x){return Math.round(x)}
+
+// ---- State ----
+let S = null;
+
+function startSession(idxs, partKey){
+  S = {
+    part: partKey,
+    queueMaster: idxs.slice(),
+    queue: idxs.slice(),
+    pos: 0,
+    round: 1,
+    firstTry: {},
+    firstOkCount: 0,
+    firstSeen: 0,
+    totalThisPart: idxs.length,
+    current: null,
+    answered:false
+  };
+  showScreen('screenQuiz');
+  document.getElementById('liveStat').style.visibility='visible';
+  nextQuestion();
+}
+
+function startPart(part){
+  startSession(shuffle(PARTS[part]), part);
+}
+
+function wrongQuestionIdxs(){
+  const stats = store.stats || {};
+  return Object.keys(stats)
+    .filter(k => (stats[k].wrong||0) > 0)
+    .map(k => parseInt(k))
+    .sort((a,b)=>{
+      const wb=stats[b].wrong - stats[a].wrong;
+      if(wb!==0) return wb;
+      // desempate: peor tasa de acierto primero
+      const ra=stats[a].wrong/stats[a].seen, rb=stats[b].wrong/stats[b].seen;
+      return rb-ra;
+    });
+}
+
+function startReview(){
+  const idxs = wrongQuestionIdxs();
+  if(!idxs.length) return;
+  startSession(shuffle(idxs), 'review');
+}
+
+function nextQuestion(){
+  // round complete?
+  if(S.pos >= S.queue.length){
+    // gather wrong-on-this-round to repesca
+    if(S._wrongThisRound && S._wrongThisRound.length){
+      S.round++;
+      S.queue = shuffle(S._wrongThisRound);
+      S._wrongThisRound = [];
+      S.pos = 0;
+    } else {
+      return finish();
+    }
+  }
+  if(!S._wrongThisRound) S._wrongThisRound = [];
+  const qIdx = S.queue[S.pos];
+  const q = QUESTIONS[qIdx];
+  const order = shuffle(q.o.map((_,i)=>i));            // shuffled option order
+  S.current = {qIdx, q, order, picks:new Set()};
+  S.answered = false;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const {q,order} = S.current;
+  const isMulti = q.m===1;
+  // top pills
+  const totalRound = S.queue.length;
+  document.getElementById('pProg').textContent = (S.pos+1)+' / '+totalRound;
+  const rEl = document.getElementById('pRound');
+  if(S.round>1){rEl.style.display='';rEl.textContent='Repesca · ronda '+S.round}
+  else rEl.style.display='none';
+  document.getElementById('pCode').textContent='['+q.c+']';
+  document.getElementById('pMulti').style.display = isMulti?'':'none';
+  const wasPp = S._postponedSet && S._postponedSet.has(S.current.qIdx);
+  document.getElementById('pPostponed').style.display = wasPp?'':'none';
+  // progress bar: overall first-pass progress
+  const frac = S.firstSeen / S.totalThisPart;
+  document.getElementById('barFill').style.width = Math.min(100,frac*100)+'%';
+  // live stat
+  document.getElementById('liveOk').textContent=S.firstOkCount;
+  document.getElementById('liveSeen').textContent=S.firstSeen;
+
+  document.getElementById('qText').textContent = q.q;
+  const hint=document.getElementById('qHint');
+  hint.classList.toggle('show',isMulti);
+
+  const wrap=document.getElementById('opts');
+  wrap.innerHTML='';
+  order.forEach((optIdx,displayPos)=>{
+    const b=document.createElement('button');
+    b.className='opt'+(isMulti?'':' radio');
+    b.dataset.opt=optIdx;
+    b.innerHTML='<span class="mark">'+(isMulti?'✓':'●')+'</span><span>'+escapeHtml(q.o[optIdx])+'</span>';
+    b.addEventListener('click',()=>toggle(optIdx,b,isMulti));
+    wrap.appendChild(b);
+  });
+
+  document.getElementById('confirmBtn').style.display='';
+  document.getElementById('confirmBtn').disabled=true;
+  document.getElementById('postponeBtn').style.display='';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('verdict').textContent='';
+  document.getElementById('verdict').className='verdict';
+  document.getElementById('verdict').style.color='';
+  const jf=document.getElementById('justif');jf.hidden=true;jf.className='justif';
+  document.getElementById('exJustif').hidden=true;
+  document.getElementById('tipJustif').hidden=true;
+}
+
+function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function toggle(optIdx,btn,isMulti){
+  if(S.answered)return;
+  const picks=S.current.picks;
+  if(isMulti){
+    if(picks.has(optIdx)){picks.delete(optIdx);btn.classList.remove('sel')}
+    else{picks.add(optIdx);btn.classList.add('sel')}
+  }else{
+    picks.clear();
+    document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    picks.add(optIdx);btn.classList.add('sel');
+  }
+  document.getElementById('confirmBtn').disabled = picks.size===0;
+}
+
+function submitAnswer(){
+  if(S.answered || S.current.picks.size===0)return;
+  S.answered=true;
+  const {q,qIdx}=S.current;
+  const correct=q.a;
+  const picks=[...S.current.picks];
+  const isRight=eqSet(picks,correct);
+
+  // record FIRST attempt only (ever, within this part-session)
+  if(!(qIdx in S.firstTry)){
+    S.firstTry[qIdx]=isRight;
+    S.firstSeen++;
+    if(isRight)S.firstOkCount++;
+    // estadística acumulada por pregunta (entre sesiones)
+    if(!store.stats) store.stats={};
+    const st = store.stats[qIdx] || {seen:0, wrong:0};
+    st.seen++;
+    if(!isRight) st.wrong++;
+    store.stats[qIdx]=st;
+    saveStore(store);
+  }
+
+  // lock + paint
+  document.querySelectorAll('.opt').forEach(o=>{
+    const oi=parseInt(o.dataset.opt);
+    o.classList.add('locked');
+    const picked=picks.includes(oi);
+    const corr=correct.includes(oi);
+    if(corr && picked)o.classList.add('correct');
+    else if(picked && !corr)o.classList.add('wrong');
+    else if(corr && !picked)o.classList.add('missed');
+  });
+
+  // verdict
+  const v=document.getElementById('verdict');
+  if(isRight){v.textContent='✓ Correcto';v.className='verdict ok'}
+  else{
+    v.textContent = q.m===1 ? '✗ Incompleto o con errores' : '✗ Incorrecto';
+    v.className='verdict no';
+    S._wrongThisRound.push(qIdx); // goes to repesca
+  }
+
+  document.getElementById('liveOk').textContent=S.firstOkCount;
+  document.getElementById('liveSeen').textContent=S.firstSeen;
+
+  // justification
+  const jf=document.getElementById('justif');
+  document.getElementById('justifBody').textContent = q.j || '';
+  document.getElementById('justifIco').textContent = isRight ? '✓' : 'i';
+  document.getElementById('justifTitle').textContent = isRight ? 'Por qué es correcta' : 'Repasá esto';
+  jf.className = 'justif ' + (isRight ? 'ok' : 'no');
+  jf.hidden = false;
+  // ejemplo
+  const exJ=document.getElementById('exJustif');
+  if(q.ej){document.getElementById('exBody').textContent=q.ej;exJ.hidden=false}
+  else exJ.hidden=true;
+  // tip
+  const tipJ=document.getElementById('tipJustif');
+  if(q.tip){document.getElementById('tipBody').textContent=q.tip;tipJ.hidden=false}
+  else tipJ.hidden=true;
+
+  document.getElementById('confirmBtn').style.display='none';
+  document.getElementById('postponeBtn').style.display='none';
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='';
+  const lastInRound = S.pos+1>=S.queue.length;
+  const moreRepesca = S._wrongThisRound.length>0;
+  nb.textContent = (lastInRound && !moreRepesca && S._wrongThisRound.length===0) ? 'Ver resultados →' : (lastInRound ? 'Ronda de repesca →':'Siguiente →');
+}
+
+function next(){
+  S.pos++;
+  nextQuestion();
+}
+
+function postpone(){
+  // sólo si la pregunta aún no fue respondida
+  if(S.answered) return;
+  const q=S.current;
+  if(!q) return;
+  // no posponer si es la única que queda por ver en la cola
+  const remaining = S.queue.length - S.pos;
+  if(remaining<=1){
+    flashHint('Es la última pendiente de la ronda — respondela para seguir.');
+    return;
+  }
+  // sacar la actual de su posición y mandarla al final de la cola
+  const [moved]=S.queue.splice(S.pos,1);
+  S.queue.push(moved);
+  S._postponed=(S._postponed||0)+1;
+  S._postponedSet=S._postponedSet||new Set();
+  S._postponedSet.add(moved);
+  // pos queda igual: ahora apunta a la que era la siguiente
+  nextQuestion();
+}
+
+function flashHint(msg){
+  const v=document.getElementById('verdict');
+  v.textContent=msg; v.className='verdict';
+  v.style.color='var(--amber)';
+  setTimeout(()=>{ if(!S.answered){v.textContent='';v.style.color=''} },2600);
+}
+
+function finish(){
+  // compute first-attempt accuracy
+  const ok=S.firstOkCount, tot=S.totalThisPart;
+  const pct = tot? (ok/tot*100):0;
+  const key='part'+S.part;
+  if(!store[key])store[key]=[];
+  const prev = store[key].length? store[key][store[key].length-1].pct : null;
+  store[key].push({pct:Math.round(pct*10)/10, ok, total:tot, ts:Date.now()});
+  saveStore(store);
+  S._resultPct=pct; S._prevPct=prev;
+  renderResults();
+  showScreen('screenRes');
+}
+
+// ---------- Results ----------
+function renderResults(){
+  const pct=S._resultPct;
+  document.getElementById('resPct').textContent=fmtPct(pct);
+  const partName = S.part==='review' ? 'Repaso de falladas' : (S.part===0?'Las 116':(S.part===1?'Parte I':'Parte II'));
+  document.getElementById('resPart').textContent=partName+' · primer intento';
+  // ring
+  const C=2*Math.PI*52;
+  const fg=document.getElementById('ringFg');
+  fg.setAttribute('stroke-dasharray',C.toFixed(1));
+  fg.setAttribute('stroke-dashoffset',C.toFixed(1));
+  requestAnimationFrame(()=>{setTimeout(()=>{fg.setAttribute('stroke-dashoffset',(C*(1-pct/100)).toFixed(1))},80)});
+
+  const msg=document.getElementById('resMsg');
+  let m;
+  if(pct>=90)m='Dominio sólido. Estás listo para el parcial.';
+  else if(pct>=75)m='Muy bien. Repasá los temas que se te escaparon.';
+  else if(pct>=55)m='Buen avance. Hacé otra ronda para afianzar.';
+  else m='A seguir practicando — la repetición rinde.';
+  msg.textContent=m;
+  document.getElementById('resSub').textContent = S.firstOkCount+' de '+S.totalThisPart+' al primer intento';
+  document.getElementById('retryBtn').textContent = S.part==='review' ? 'Repasar de nuevo' : 'Reintentar esta parte';
+
+  // ranking table
+  const key='part'+S.part;
+  const hist=store[key]||[];
+  const body=document.getElementById('rankBody');
+  body.innerHTML='';
+  // show best to worst? -> chronological with delta + medals by rank
+  const ranked=hist.map((h,i)=>({...h,attempt:i+1})).slice();
+  // medals based on top pct values
+  const sortedByPct=[...ranked].sort((a,b)=>b.pct-a.pct);
+  const medalFor=v=>{const r=sortedByPct.findIndex(x=>x.attempt===v.attempt);return r===0?'🥇':r===1?'🥈':r===2?'🥉':''};
+  ranked.forEach((h,i)=>{
+    const tr=document.createElement('tr');
+    if(i===ranked.length-1)tr.className='is-new';
+    const prev=i>0?ranked[i-1].pct:null;
+    let delta='',dcls='flat';
+    if(prev!==null){const d=h.pct-prev;if(d>0.05){delta='▲ '+d.toFixed(0);dcls='up'}else if(d<-0.05){delta='▼ '+Math.abs(d).toFixed(0);dcls='down'}else{delta='—';dcls='flat'}}
+    else{delta='·'}
+    tr.innerHTML =
+      '<td><span class="rk-medal">'+(medalFor(h)||('#'+h.attempt))+'</span></td>'+
+      '<td>'+(i===ranked.length-1?'<strong style="color:var(--ink)">Ahora</strong>':('Intento '+h.attempt))+
+        '<div class="rk-bar"><i style="width:'+h.pct+'%"></i></div></td>'+
+      '<td class="rk-pct">'+h.pct.toFixed(0)+'% <span style="color:var(--muted);font-weight:400">('+h.ok+'/'+h.total+')</span></td>'+
+      '<td class="rk-delta '+dcls+'">'+delta+'</td>';
+    body.appendChild(tr);
+  });
+
+  drawTrend(hist);
+}
+
+function drawTrend(hist){
+  const svg=document.getElementById('trend');
+  svg.innerHTML='';
+  const W=svg.clientWidth||760, H=64, pad=4;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  if(hist.length<2){
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',W/2);t.setAttribute('y',H/2+4);t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill','#a89fc4');t.setAttribute('font-size','11');t.setAttribute('font-family','JetBrains Mono, monospace');
+    t.textContent= hist.length===0?'':'Hacé otro intento para ver la curva';
+    svg.appendChild(t);return;
+  }
+  const xs=(i)=>pad+(W-2*pad)*(i/(hist.length-1));
+  const ys=(v)=>H-pad-(H-2*pad)*(v/100);
+  let d='';
+  hist.forEach((h,i)=>{d+=(i?'L':'M')+xs(i).toFixed(1)+' '+ys(h.pct).toFixed(1)+' '});
+  // area
+  const area=document.createElementNS('http://www.w3.org/2000/svg','path');
+  area.setAttribute('d',d+'L'+xs(hist.length-1).toFixed(1)+' '+(H-pad)+' L'+xs(0).toFixed(1)+' '+(H-pad)+' Z');
+  area.setAttribute('fill','rgba(157,123,255,.12)');
+  svg.appendChild(area);
+  const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+  line.setAttribute('d',d);line.setAttribute('fill','none');line.setAttribute('stroke','#9d7bff');line.setAttribute('stroke-width','2');line.setAttribute('stroke-linecap','round');line.setAttribute('stroke-linejoin','round');
+  svg.appendChild(line);
+  hist.forEach((h,i)=>{
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',xs(i));c.setAttribute('cy',ys(h.pct));c.setAttribute('r',i===hist.length-1?'4':'3');
+    c.setAttribute('fill',i===hist.length-1?'#3ddc84':'#9d7bff');
+    svg.appendChild(c);
+  });
+}
+
+// ---------- Start-screen best badges ----------
+function refreshBadges(){
+  [1,2].forEach(p=>{
+    const el=document.getElementById('best'+p);
+    const hist=store['part'+p]||[];
+    if(!hist.length){el.textContent='Sin intentos aún';el.classList.add('none')}
+    else{
+      const best=Math.max(...hist.map(h=>h.pct));
+      el.textContent='Mejor: '+best.toFixed(0)+'%  ·  '+hist.length+' intento'+(hist.length>1?'s':'');
+      el.classList.remove('none');
+    }
+  });
+  renderReviewList();
+}
+
+function renderReviewList(){
+  const card=document.getElementById('reviewCard');
+  const idxs=wrongQuestionIdxs();
+  if(!idxs.length){ card.hidden=true; return; }
+  card.hidden=false;
+  const stats=store.stats||{};
+  document.getElementById('revNote').textContent =
+    'Tenés '+idxs.length+' pregunta'+(idxs.length>1?'s':'')+' con al menos un error. Ordenadas de la que más fallaste a la que menos.';
+  const list=document.getElementById('reviewList');
+  list.innerHTML='';
+  idxs.forEach((qi,i)=>{
+    const q=QUESTIONS[qi]; const st=stats[qi];
+    const li=document.createElement('li');
+    li.className='rev-item'+(i===0?' top1':(i===1?' top2':''));
+    const qt = q.q.length>110 ? q.q.slice(0,110).trim()+'…' : q.q;
+    li.innerHTML =
+      '<span class="rev-rank">'+(i+1)+'</span>'+
+      '<div class="rev-body"><span class="rev-code">['+q.c+']</span>'+
+        '<span class="rev-q">'+escapeHtml(qt)+'</span></div>'+
+      '<span class="rev-count">'+st.wrong+'× '+(st.wrong>1?'errores':'error')+
+        '<small>'+st.wrong+' de '+st.seen+' veces</small></span>';
+    list.appendChild(li);
+  });
+  // botón para limpiar el historial de falladas
+  const box=document.createElement('div');
+  box.className='rev-clearbox';
+  const btn=document.createElement('button');
+  btn.className='rev-clear';
+  btn.textContent='Vaciar lista de falladas';
+  btn.addEventListener('click',()=>{
+    if(window.confirm('¿Borrar el conteo de preguntas falladas? El ranking de las partes se mantiene.')){
+      store.stats={}; saveStore(store); renderReviewList();
+    }
+  });
+  box.appendChild(btn);
+  list.appendChild(box);
+}
+
+// ---------- Screen mgmt ----------
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id!=='screenQuiz')document.getElementById('liveStat').style.visibility='hidden';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---------- Wire up ----------
+document.querySelectorAll('[data-part]').forEach(b=>{
+  b.addEventListener('click',()=>startPart(parseInt(b.dataset.part)));
+});
+document.getElementById('confirmBtn').addEventListener('click',submitAnswer);
+document.getElementById('nextBtn').addEventListener('click',next);
+document.getElementById('postponeBtn').addEventListener('click',postpone);
+document.getElementById('themeBtn').addEventListener('click',cycleTheme);
+document.getElementById('reviewGo').addEventListener('click',startReview);
+document.getElementById('quitQuiz').addEventListener('click',()=>{if(confirmLeave())goHome()});
+document.getElementById('retryBtn').addEventListener('click',()=>{ if(S.part==='review') startReview(); else startPart(S.part); });
+document.getElementById('homeBtn').addEventListener('click',goHome);
+document.getElementById('resetAll').addEventListener('click',()=>{
+  if(confirm2('¿Borrar todo el historial de intentos? Esta acción no se puede deshacer.')){
+    store={};saveStore(store);refreshBadges();
+  }
+});
+function confirmLeave(){return confirm2('¿Salir del intento? El progreso de esta ronda no se guardará en el ranking.')}
+function confirm2(msg){return window.confirm(msg)}
+function goHome(){S=null;refreshBadges();showScreen('screenStart')}
+
+// keyboard
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('screenQuiz').classList.contains('active'))return;
+  if(e.key==='Enter'){
+    if(document.getElementById('nextBtn').style.display!=='none'){next();e.preventDefault()}
+    else if(!document.getElementById('confirmBtn').disabled){submitAnswer();e.preventDefault()}
+    return;
+  }
+  if((e.key==='p'||e.key==='P') && !S.answered){
+    postpone();e.preventDefault();return;
+  }
+  const n=parseInt(e.key);
+  if(n>=1&&n<=9 && !S.answered){
+    const btns=document.querySelectorAll('.opt');
+    if(btns[n-1])btns[n-1].click();
+  }
+});
+
+refreshBadges();
+</script>
+</body>
+</html>
